@@ -16,7 +16,7 @@ public class UserFilter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer filterId;
 
     private Integer timeLimit;
 
@@ -33,12 +33,12 @@ public class UserFilter implements Serializable {
     public UserFilter() {
     }
 
-    public String getId() {
-        return id;
+    public Integer getFilterId() {
+        return filterId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFilterId(Integer filterId) {
+        this.filterId = filterId;
     }
 
     public Integer getTimeLimit() {
