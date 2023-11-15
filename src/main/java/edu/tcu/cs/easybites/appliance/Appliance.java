@@ -1,11 +1,12 @@
 package edu.tcu.cs.easybites.appliance;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import edu.tcu.cs.easybites.appuser.AppUser;
+import edu.tcu.cs.easybites.recipe.Recipe;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Appliance implements Serializable {
@@ -15,6 +16,12 @@ public class Appliance implements Serializable {
     private Integer applianceId;
 
     private String name;
+
+    @ManyToMany(mappedBy="recipe_appliances")
+    private List<Recipe> recipes = new ArrayList<>();
+
+    @ManyToMany(mappedBy="user_appliances")
+    private List<AppUser> appUsers = new ArrayList<>();
 
     public Appliance() {
     }
@@ -33,5 +40,21 @@ public class Appliance implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
+    }
+
+    public List<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUsers(List<AppUser> appUsers) {
+        this.appUsers = appUsers;
     }
 }
