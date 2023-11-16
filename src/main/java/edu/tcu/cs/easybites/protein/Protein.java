@@ -19,7 +19,7 @@ public class Protein implements Serializable {
     @Id
     private Integer proteinId;
 
-    @ManyToMany(mappedBy="protein_filter")
+    @ManyToMany(mappedBy="proteins")
     private List<UserFilter> userFilters = new ArrayList<>();
 
     public Protein() {

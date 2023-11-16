@@ -14,7 +14,7 @@ public class Ingredient implements Serializable {
     @Id
     private String upcValue;
 
-    @ManyToMany(mappedBy="recipe_ingredients")
+    @ManyToMany(mappedBy="ingredients")
     private List<Recipe> recipes = new ArrayList<>();
 
     public Ingredient() {
