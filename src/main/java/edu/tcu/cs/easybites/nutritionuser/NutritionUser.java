@@ -1,17 +1,27 @@
 package edu.tcu.cs.easybites.nutritionuser;
 
+import edu.tcu.cs.easybites.recipe.Recipe;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class NutritionUser implements Serializable {
     private String firstName;
     private String lastName;
     private String adminLevel;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "recipeOwner")
+    private List<Recipe> recipes = new ArrayList<>();
+
     @Id
-    private Integer id;
+    private Integer nutritionUserId;
+
 
     public NutritionUser() {
 
@@ -41,11 +51,19 @@ public class NutritionUser implements Serializable {
         this.adminLevel = adminLevel;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getNutritionUserId() {
+        return nutritionUserId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setNutritionUserId(Integer nutritionUserId) {
+        this.nutritionUserId = nutritionUserId;
+    }
+
+    public List<Recipe> getRecipes() {
+        return recipes;
+    }
+
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
 }
