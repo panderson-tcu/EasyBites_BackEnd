@@ -17,10 +17,10 @@ public class Allergen implements Serializable {
 
     private String name;
 
-    @ManyToMany(mappedBy="recipe_allergens")
+    @ManyToMany(mappedBy="allergens")
     private List<Recipe> recipes = new ArrayList<>();
 
-    @ManyToMany(mappedBy="user_allergens")
+    @ManyToMany(mappedBy="allergens")
     private List<AppUser> appUsers = new ArrayList<>();
 
     public Allergen() {

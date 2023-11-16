@@ -33,7 +33,7 @@ public class AppUser implements Serializable {
             inverseJoinColumns = @JoinColumn(name="allergen_id")
     )
     private List<Allergen> allergens = new ArrayList<>();
-
+//
     @ManyToMany
     @JoinTable(
             name="user_likes",

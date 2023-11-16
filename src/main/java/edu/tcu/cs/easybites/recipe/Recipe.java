@@ -65,7 +65,7 @@ public class Recipe implements Serializable {
     )
     private List<Allergen> allergens = new ArrayList<>();
 
-    @ManyToMany(mappedBy="user_likes")
+    @ManyToMany(mappedBy="recipes")
     private List<AppUser> appUsers = new ArrayList<>();
 
     public Recipe() {

@@ -17,10 +17,10 @@ public class Appliance implements Serializable {
 
     private String name;
 
-    @ManyToMany(mappedBy="recipe_appliances")
+    @ManyToMany(mappedBy="appliances")
     private List<Recipe> recipes = new ArrayList<>();
 
-    @ManyToMany(mappedBy="user_appliances")
+    @ManyToMany(mappedBy="appliances")
     private List<AppUser> appUsers = new ArrayList<>();
 
     public Appliance() {
