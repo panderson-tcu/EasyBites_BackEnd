@@ -57,11 +57,4 @@ public class UserFilter implements Serializable {
         this.costLimit = costLimit;
     }
 
-//    public List<Protein> getProteins() {
-//        return proteins;
-//    }
-//
-//    public void setProteins(List<Protein> proteins) {
-//        this.proteins = proteins;
-//    }
 }
