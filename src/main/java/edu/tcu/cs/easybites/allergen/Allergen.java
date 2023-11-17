@@ -12,7 +12,6 @@ import java.util.List;
 public class Allergen implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer allergenId;
 
     private String name;

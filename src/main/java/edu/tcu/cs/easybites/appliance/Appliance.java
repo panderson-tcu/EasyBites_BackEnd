@@ -12,7 +12,6 @@ import java.util.List;
 public class Appliance implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer applianceId;
 
     private String name;
