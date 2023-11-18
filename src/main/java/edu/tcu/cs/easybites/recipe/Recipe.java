@@ -149,6 +149,7 @@ public class Recipe implements Serializable {
 
     public void setRecipeOwner(NutritionUser recipeOwner) {
         this.recipeOwner = recipeOwner;
+//        recipeOwner.addRecipe(this);
     }
 
     public List<Ingredient> getIngredients() {
@@ -182,4 +183,20 @@ public class Recipe implements Serializable {
     public void setAppUsers(List<AppUser> appUsers) {
         this.appUsers = appUsers;
     }
+
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+        ingredient.addRecipe(this);
+    }
+
+    public void addAppliance(Appliance appliance) {
+        this.appliances.add(appliance);
+        appliance.addRecipe(this);
+    }
+
+    public void addAllergen(Allergen allergen) {
+        this.allergens.add(allergen);
+        allergen.addRecipe(this);
+    }
+
 }

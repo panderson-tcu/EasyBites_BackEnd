@@ -66,4 +66,10 @@ public class NutritionUser implements Serializable {
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
+
+    public void addRecipe(Recipe recipe) {
+        recipe.setRecipeOwner(this);
+        this.recipes.add(recipe);
+    }
+
 }

@@ -56,4 +56,8 @@ public class Allergen implements Serializable {
     public void setAppUsers(List<AppUser> appUsers) {
         this.appUsers = appUsers;
     }
+
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
+    }
 }
