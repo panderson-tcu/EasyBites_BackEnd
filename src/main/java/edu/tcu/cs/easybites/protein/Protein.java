@@ -57,4 +57,9 @@ public class Protein implements Serializable {
     public void setUserFilters(List<UserFilter> userFilters) {
         this.userFilters = userFilters;
     }
+
+    public void addRecipe(Recipe recipe) {
+        recipe.setProtein(this);
+        this.recipes.add(recipe);
+    }
 }
