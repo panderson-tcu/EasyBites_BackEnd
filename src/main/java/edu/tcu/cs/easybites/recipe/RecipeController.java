@@ -27,12 +27,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "View recipe by id successful", recipeDto);
     }
 
-//    @GetMapping("/recipes")
-//    public Result findAllRecipes() {
-//        List<Recipe> foundRecipes = this.recipeService.findAll();
-//        List<RecipeDto> recipeDtos = recipeToRecipeDtoConverter.convertList(foundRecipes);
-//        return new Result(true, StatusCode.SUCCESS, "View all recipes successful");
-//    }
+    @GetMapping("/recipes")
+    public Result findAllRecipes() {
+        List<Recipe> foundRecipes = this.recipeService.findAll();
+        List<RecipeDto> recipeDtos = recipeToRecipeDtoConverter.convertList(foundRecipes);
+        return new Result(true, StatusCode.SUCCESS, "View all recipes successful", recipeDtos);
+    }
 
 }
 
