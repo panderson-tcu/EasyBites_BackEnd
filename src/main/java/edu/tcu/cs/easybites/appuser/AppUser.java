@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 public class AppUser implements Serializable {
-    @Id
+    @Id //add generated value annotation to generate ID?
     private Integer userId;
     private String email;
     private Integer age;
@@ -33,7 +33,7 @@ public class AppUser implements Serializable {
             inverseJoinColumns = @JoinColumn(name="allergen_id")
     )
     private List<Allergen> allergens = new ArrayList<>();
-//
+
     @ManyToMany
     @JoinTable(
             name="user_likes",

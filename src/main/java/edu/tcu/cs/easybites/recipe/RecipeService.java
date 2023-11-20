@@ -11,4 +11,9 @@ public class RecipeService {
     public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
+
+    public Recipe findById(Integer recipeId) {
+        return this.recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RecipeNotFoundException(recipeId));
+    }
 }

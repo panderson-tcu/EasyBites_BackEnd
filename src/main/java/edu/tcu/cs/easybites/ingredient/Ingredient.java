@@ -35,4 +35,8 @@ public class Ingredient implements Serializable {
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
     }
+
+    public void addRecipe(Recipe recipe) {
+        this.recipes.add(recipe);
+    }
 }
