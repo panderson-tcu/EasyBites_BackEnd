@@ -1,5 +1,6 @@
 package edu.tcu.cs.easybites.recipe;
 
+import edu.tcu.cs.easybites.recipe.dto.utils.IdWorker;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,8 @@ import java.util.List;
 @Transactional
 public class RecipeService {
     private final RecipeRepository recipeRepository;
+
+//    private final IdWorker idWorker;
 
     public RecipeService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
@@ -21,5 +24,9 @@ public class RecipeService {
 
     public List<Recipe> findAll() {
         return this.recipeRepository.findAll();
+    }
+
+    public Recipe save(Recipe newRecipe) {
+        return null;
     }
 }

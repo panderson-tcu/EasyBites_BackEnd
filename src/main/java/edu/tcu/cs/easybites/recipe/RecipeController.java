@@ -4,9 +4,7 @@ import edu.tcu.cs.easybites.recipe.converter.RecipeToRecipeDtoConverter;
 import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +30,11 @@ public class RecipeController {
         List<Recipe> foundRecipes = this.recipeService.findAll();
         List<RecipeDto> recipeDtos = recipeToRecipeDtoConverter.convertList(foundRecipes);
         return new Result(true, StatusCode.SUCCESS, "View all recipes successful", recipeDtos);
+    }
+
+    @PostMapping("/recipes")
+    public Result addRecipe(@RequestBody RecipeDto recipeDto ) {
+        return null;
     }
 
 }
