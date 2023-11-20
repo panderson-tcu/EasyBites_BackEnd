@@ -98,7 +98,6 @@ public class DBDataInitializer implements CommandLineRunner {
 
         // Create Recipe 1
         Recipe recipe1 = new Recipe();
-        recipe1.setRecipeId(110405679);
         recipe1.setTitle("Enchilada Casserole");
         recipe1.setCookTime(10);
         recipe1.setIngredientsQuantity("5 oz Red Enchilada Sauce\n8 oz Ground Turkey\n");
@@ -116,19 +115,18 @@ public class DBDataInitializer implements CommandLineRunner {
 
         // Create Recipe 2
         Recipe recipe2 = new Recipe();
-        recipe2.setRecipeId(110405680);
         recipe2.setTitle("Vegetarian Pasta");
         recipe2.setCookTime(15);
         recipe2.setIngredientsQuantity("8 oz Pasta\n1 cup Cherry Tomatoes\n");
         recipe2.setEstimatedCost(3.50);
         recipe2.setInstructions("Boil pasta according to package instructions.\nCut cherry tomatoes in half...");
         recipe2.setServings(4);
+        recipe2.setRecipeOwner(nutritionUser);
 
         // Set different Protein, NutritionUser, Ingredients, and Appliances as needed for Recipe 2
 
         // Create Recipe 3
         Recipe recipe3 = new Recipe();
-        recipe3.setRecipeId(110405681);
         recipe3.setTitle("Grilled Salmon");
         recipe3.setCookTime(12);
         recipe3.setIngredientsQuantity("1 lb Salmon fillets\n1 lemon\n");
