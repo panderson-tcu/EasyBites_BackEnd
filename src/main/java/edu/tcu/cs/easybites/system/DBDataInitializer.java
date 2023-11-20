@@ -68,8 +68,20 @@ public class DBDataInitializer implements CommandLineRunner {
         // Create NutritionUser
         NutritionUser nutritionUser = new NutritionUser();
         nutritionUser.setNutritionUserId(110409760);
+        nutritionUser.setFirstName("Francisco");
+        nutritionUser.setLastName("Alarcon");
+        nutritionUser.setAdminLevel("Nutrition Student");
+
+
+        NutritionUser nutritionUser2 = new NutritionUser();
+        nutritionUser2.setNutritionUserId(110409762);
+        nutritionUser2.setFirstName("Paige");
+        nutritionUser2.setLastName("Anderson");
+        nutritionUser2.setAdminLevel("Nutrition Admin");
+
 
         nutritionUserRepository.save(nutritionUser);
+        nutritionUserRepository.save(nutritionUser2);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
@@ -109,7 +121,10 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe1.addIngredient(i1);
         recipe1.addIngredient(i2);
         recipe1.addAppliance(appliance);
+        recipe1.addAppliance(appliance2);
         recipe1.addAllergen(milk);
+        recipe1.addAllergen(peanuts);
+
 
 
 
@@ -121,7 +136,10 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe2.setEstimatedCost(3.50);
         recipe2.setInstructions("Boil pasta according to package instructions.\nCut cherry tomatoes in half...");
         recipe2.setServings(4);
-        recipe2.setRecipeOwner(nutritionUser);
+        recipe2.setRecipeOwner(nutritionUser2);
+        recipe2.setProtein(beef);
+        recipe2.addIngredient(i1);
+        recipe2.addIngredient(i2);
 
         // Set different Protein, NutritionUser, Ingredients, and Appliances as needed for Recipe 2
 
