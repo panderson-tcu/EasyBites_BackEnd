@@ -6,6 +6,7 @@ import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.protein.Protein;
 import edu.tcu.cs.easybites.system.StatusCode;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -136,5 +137,27 @@ class RecipeControllerTest {
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find recipe with ID 110405679."))
                 .andExpect(jsonPath("$.data").isEmpty());
+
     }
+
+    @Test
+    void testFindAllSuccess() throws Exception {
+
+        // given
+        given(recipeService.findAll()).willReturn(this.recipes);
+
+        // when and then
+        this.mockMvc.perform(get("/recipes").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("View all recipes successful"))
+                .andExpect(jsonPath("$.data").value(Matchers.hasSize(this.recipes.size())))
+                .andExpect(jsonPath("$.data[0].recipeId").value(110405679))
+                .andExpect(jsonPath("$.data[0].title").value("Enchilada Casserole"))
+                .andExpect(jsonPath("$.data[1].recipeId").value(110405680))
+                .andExpect(jsonPath("$.data[1].title").value("Vegetarian Pasta"));
+
+
+    }
+
 }
