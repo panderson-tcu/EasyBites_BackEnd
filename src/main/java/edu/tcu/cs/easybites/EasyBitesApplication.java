@@ -10,4 +10,9 @@ public class EasyBitesApplication {
         SpringApplication.run(EasyBitesApplication.class, args);
     }
 
+//    @Bean
+//    public IdWorker idWorker() {
+//        return new IdWorker(1,1);
+//    }
+
 }

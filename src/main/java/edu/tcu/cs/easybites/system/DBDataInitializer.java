@@ -155,8 +155,5 @@ public class DBDataInitializer implements CommandLineRunner {
         recipeRepository.save(recipe1);
         recipeRepository.save(recipe2);
         recipeRepository.save(recipe3);
-
-
-
     }
 }

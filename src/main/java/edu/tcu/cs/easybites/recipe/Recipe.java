@@ -7,6 +7,8 @@ import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.protein.Protein;
 import edu.tcu.cs.easybites.ingredient.Ingredient;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class Recipe implements Serializable {
 
     private String instructions;
 
+    @NotNull
     private Integer servings;
 
     private String status;
