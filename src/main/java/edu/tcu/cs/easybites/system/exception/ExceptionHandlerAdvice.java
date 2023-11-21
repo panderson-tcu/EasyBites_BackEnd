@@ -1,5 +1,6 @@
 package edu.tcu.cs.easybites.system.exception;
 
+import edu.tcu.cs.easybites.protein.utils.ProteinNotFoundException;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.RecipeNotFoundException;
 import edu.tcu.cs.easybites.system.Result;
@@ -23,6 +24,12 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(RecipeNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     Result handleRecipeNotFoundException(RecipeNotFoundException ex) {
+        return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(ProteinNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    Result handleProteinNotFoundException(ProteinNotFoundException ex) {
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
     }
 
