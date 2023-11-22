@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -72,6 +73,28 @@ public class NutritionUserServiceTest {
         assertThat(actualNutritionUsers.size()).isEqualTo(this.nutritionUsers.size());
         verify(nutritionUserRepository, times(1)).findAll();
 
+    }
 
+    @Test
+    void testAddUserSuccess() {
+        // given
+        NutritionUser newUser = new NutritionUser();
+        newUser.setNutritionUserId(110401715);
+        newUser.setFirstName("Paige");
+        newUser.setLastName("Anderson");
+        newUser.setEmail("paige.anderson@tcu.edu");
+        newUser.setAdminLevel("admin");
+
+        given(this.nutritionUserRepository.save(newUser)).willReturn(newUser);
+
+        // when
+        NutritionUser returnedUser = this.nutritionUserService.save(newUser);
+
+        // then
+        assertThat(returnedUser.getNutritionUserId()).isEqualTo(110401715);
+        assertThat(returnedUser.getFirstName()).isEqualTo("Paige");
+        assertThat(returnedUser.getLastName()).isEqualTo("Anderson");
+        assertThat(returnedUser.getAdminLevel()).isEqualTo("admin");
+        verify(this.nutritionUserRepository, times(1)).save(newUser);
     }
 }

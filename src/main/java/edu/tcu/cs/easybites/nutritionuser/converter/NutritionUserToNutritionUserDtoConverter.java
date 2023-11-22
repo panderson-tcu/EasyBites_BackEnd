@@ -21,10 +21,11 @@ public class NutritionUserToNutritionUserDtoConverter implements Converter<Nutri
 
     @Override
     public NutritionUserDto convert(NutritionUser source) {
-        NutritionUserDto nutritionUserDto = new NutritionUserDto(source.getFirstName(),
-                                                                    source.getLastName(),
-                                                                    source.getNutritionUserId(),
-                                                                    source.getAdminLevel()
+        NutritionUserDto nutritionUserDto = new NutritionUserDto(source.getNutritionUserId(),
+                                                                 source.getFirstName(),
+                                                                source.getLastName(),
+                                                                source.getAdminLevel(),
+                                                                source.getEmail()
 //                                                                    source.getRecipes() != null
 //                                                                            ? this.recipeToRecipeDtoConverter.convertList(source.getRecipes())
 //                                                                            : null

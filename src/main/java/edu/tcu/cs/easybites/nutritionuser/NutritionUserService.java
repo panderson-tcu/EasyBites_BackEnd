@@ -19,4 +19,8 @@ public class NutritionUserService {
         return this.nutritionUserRepository.findAll();
     }
 
+    public NutritionUser save(NutritionUser newNutritionUser) {
+        // NEED TO ENCODE PLAIN PASSWORD BEFORE SAVING TO DB TODO
+        return this.nutritionUserRepository.save(newNutritionUser);
+    }
 }

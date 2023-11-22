@@ -1,5 +1,6 @@
 package edu.tcu.cs.easybites.nutritionuser;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.easybites.system.StatusCode;
 import org.hamcrest.Matchers;
@@ -8,7 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
@@ -40,6 +44,9 @@ public class NutritionUserControllerTest {
     ObjectMapper objectMapper;
 
     List<NutritionUser> nutritionUsers;
+
+    @Value("${api.endpoint.base-url}")
+    String baseUrl;
 
     @BeforeEach
     void setUp() {
@@ -75,7 +82,7 @@ public class NutritionUserControllerTest {
         given(nutritionUserService.findAll()).willReturn(this.nutritionUsers);
 
         // when and then
-        this.mockMvc.perform(get("/nutrition-user").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/nutrition-user").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("View all nutrition users successful"))
@@ -85,5 +92,34 @@ public class NutritionUserControllerTest {
                 .andExpect(jsonPath("$.data[1].nutritionUserId").value(110409760))
                 .andExpect(jsonPath("$.data[1].firstName").value("Francisco"));
 
+    }
+
+    @Test
+    void testAddUserSuccess() throws Exception {
+        // given
+        NutritionUser newUser = new NutritionUser();
+        newUser.setNutritionUserId(110401715);
+        newUser.setFirstName("Paige");
+        newUser.setLastName("Anderson");
+        newUser.setEmail("paige.anderson@tcu.edu");
+        newUser.setAdminLevel("admin");
+        newUser.setPassword("password");
+
+        String json = this.objectMapper.writeValueAsString(newUser);
+
+        newUser.setNutritionUserId(110401715);
+
+        given(this.nutritionUserService.save(Mockito.any(NutritionUser.class))).willReturn(newUser);
+
+        // when and then
+        this.mockMvc.perform(post(this.baseUrl + "/nutrition-user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Add user successful"))
+                .andExpect(jsonPath("$.data.nutritionUserId").value(110401715))
+                .andExpect(jsonPath("$.data.firstName").value("Paige"))
+                .andExpect(jsonPath("$.data.adminLevel").value("admin"));
     }
 }

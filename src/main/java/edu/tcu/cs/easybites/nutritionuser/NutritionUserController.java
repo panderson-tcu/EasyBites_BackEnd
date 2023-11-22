@@ -5,12 +5,13 @@ import edu.tcu.cs.easybites.nutritionuser.converter.NutritionUserToNutritionUser
 import edu.tcu.cs.easybites.nutritionuser.dto.NutritionUserDto;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("${api.endpoint.base-url}")
 public class NutritionUserController {
 
     private final NutritionUserService nutritionUserService;
@@ -31,5 +32,12 @@ public class NutritionUserController {
         List<NutritionUserDto> nutritionUserDtos = nutritionUserToNutritionUserDtoConverter.convertList(foundNutritionUsers);
         return new Result(true, StatusCode.SUCCESS, "View all nutrition users successful", nutritionUserDtos);
 
+    }
+
+    @PostMapping("/nutrition-user")
+    public Result addNutritionUser(@Valid @RequestBody NutritionUser newNutritionUser) {
+        NutritionUser savedUser = this.nutritionUserService.save(newNutritionUser);
+        NutritionUserDto savedUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(savedUser);
+        return new Result(true, StatusCode.SUCCESS, "Add user successful", savedUserDto);
     }
 }
