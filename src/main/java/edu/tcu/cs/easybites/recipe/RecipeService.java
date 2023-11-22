@@ -2,9 +2,7 @@ package edu.tcu.cs.easybites.recipe;
 
 import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.ingredient.IngredientRepository;
-import edu.tcu.cs.easybites.protein.Protein;
-import edu.tcu.cs.easybites.protein.ProteinRepository;
-import edu.tcu.cs.easybites.protein.utils.ProteinNotFoundException;
+import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,7 @@ public class RecipeService {
 
     public Recipe findById(Integer recipeId) {
         return this.recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new RecipeNotFoundException(recipeId));
+                .orElseThrow(() -> new ObjectNotFoundException("recipe", recipeId));
     }
 
     public List<Recipe> findAll() {
@@ -70,7 +68,7 @@ public class RecipeService {
                     oldRecipe.setAppUsers(update.getAppUsers());
                     return this.recipeRepository.save(oldRecipe);
                 })
-                .orElseThrow(() -> new RecipeNotFoundException(recipeId));
+                .orElseThrow(() -> new ObjectNotFoundException("recipe", recipeId));
 
     }
 
@@ -80,6 +78,6 @@ public class RecipeService {
                     oldRecipe.setStatus(newStatus);
                     return this.recipeRepository.save(oldRecipe);
                 })
-                .orElseThrow(() -> new RecipeNotFoundException(recipeId));
+                .orElseThrow(() -> new ObjectNotFoundException("recipe", recipeId));
     }
 }

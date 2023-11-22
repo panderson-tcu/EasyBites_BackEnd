@@ -5,6 +5,7 @@ import edu.tcu.cs.easybites.appliance.Appliance;
 import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.protein.Protein;
+import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -179,7 +180,7 @@ class RecipeServiceTest {
 
         //Then
         assertThat(thrown)
-                .isInstanceOf(RecipeNotFoundException.class)
+                .isInstanceOf(ObjectNotFoundException.class)
                 .hasMessage("Could not find recipe with ID 110405679.");
         verify(recipeRepository, times(1)).findById(110405679);
     }
@@ -280,7 +281,7 @@ class RecipeServiceTest {
         given(recipeRepository.findById(110405679)).willReturn(Optional.empty());
 
         // when
-        assertThrows(RecipeNotFoundException.class,
+        assertThrows(ObjectNotFoundException.class,
                 () -> recipeService.update(110405679, update));
 
         // then
@@ -335,7 +336,7 @@ class RecipeServiceTest {
         given(recipeRepository.findById(110405679)).willReturn(Optional.empty());
 
         // when
-        assertThrows(RecipeNotFoundException.class,
+        assertThrows(ObjectNotFoundException.class,
                 () -> recipeService.changeRecipeStatus(110405679, "approved")
         );
 
