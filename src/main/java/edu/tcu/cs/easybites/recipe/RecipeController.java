@@ -55,7 +55,7 @@ public class RecipeController {
     }
 
     @PutMapping("/recipes/{newStatus}/{recipeId}")
-    public Result declineRecipe(@PathVariable String newStatus, @PathVariable Integer recipeId) {
+    public Result changeRecipeStatus(@PathVariable String newStatus, @PathVariable Integer recipeId) {
         this.recipeService.changeRecipeStatus(recipeId, newStatus);
         return new Result(true, StatusCode.SUCCESS, "Recipe status changed successfully");
     }
