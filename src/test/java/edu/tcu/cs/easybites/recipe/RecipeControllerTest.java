@@ -15,12 +15,14 @@ import edu.tcu.cs.easybites.protein.converter.ProteinToProteinDtoConverter;
 import edu.tcu.cs.easybites.protein.dto.ProteinDto;
 import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.StatusCode;
+import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -48,6 +50,9 @@ class RecipeControllerTest {
     ObjectMapper objectMapper;
 
     List<Recipe> recipes;
+
+    @Value("${api.endpoint.base-url}")
+    String baseUrl;
 
     @BeforeEach
     void setUp() {
@@ -130,7 +135,7 @@ class RecipeControllerTest {
         given(this.recipeService.findById(110405679)).willReturn(this.recipes.get(0));
 
         // When and then
-        this.mockMvc.perform(get("/recipes/110405679").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/recipes/110405679").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("View recipe by id successful"))
@@ -141,10 +146,10 @@ class RecipeControllerTest {
     @Test
     void testFindRecipeByIdNotFound() throws Exception {
         // Given
-        given(this.recipeService.findById(110405679)).willThrow(new RecipeNotFoundException(110405679));
+        given(this.recipeService.findById(110405679)).willThrow(new ObjectNotFoundException("recipe", 110405679));
 
         // When and then
-        this.mockMvc.perform(get("/recipes/110405679").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/recipes/110405679").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(false))
                 .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
                 .andExpect(jsonPath("$.message").value("Could not find recipe with ID 110405679."))
@@ -159,7 +164,7 @@ class RecipeControllerTest {
         given(recipeService.findAll()).willReturn(this.recipes);
 
         // when and then
-        this.mockMvc.perform(get("/recipes").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get(this.baseUrl + "/recipes").accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("View all recipes successful"))
@@ -227,7 +232,7 @@ class RecipeControllerTest {
         given(recipeService.save(Mockito.any(Recipe.class))).willReturn(savedRecipe);
 
         // when and then
-        this.mockMvc.perform(post("/recipes").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(post(this.baseUrl + "/recipes").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.flag").value(true))
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("Recipe submitted successfully"))
