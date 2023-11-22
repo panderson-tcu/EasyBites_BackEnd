@@ -3,13 +3,18 @@ package edu.tcu.cs.easybites.recipe.converter;
 import edu.tcu.cs.easybites.allergen.converter.AllergenDtoToAllergenConverter;
 import edu.tcu.cs.easybites.appliance.converter.ApplianceDtoToApplianceConverter;
 import edu.tcu.cs.easybites.appuser.converter.AppUserDtoToAppUserConverter;
+import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.ingredient.converter.IngredientDtoToIngredientConverter;
+import edu.tcu.cs.easybites.ingredient.dto.IngredientDto;
 import edu.tcu.cs.easybites.nutritionuser.converter.NutritionUserDtoToNutritionUserConverter;
 import edu.tcu.cs.easybites.protein.converter.ProteinDtoToProteinConverter;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RecipeDtoToRecipeConverter implements Converter<RecipeDto, Recipe> {
@@ -52,5 +57,11 @@ public class RecipeDtoToRecipeConverter implements Converter<RecipeDto, Recipe> 
         recipe.setAllergens(source.allergens() != null ? this.allergenDtoToAllergenConverter.convertList(source.allergens()) : null );
         recipe.setAppUsers(source.appUsers() != null ? this.appUserDtoToAppUserConverter.convertList(source.appUsers()) : null );
         return recipe;
+    }
+
+    public List<Recipe> convertList(List<RecipeDto> recipeDtos) {
+        return recipeDtos.stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 }
