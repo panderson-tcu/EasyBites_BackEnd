@@ -1,11 +1,7 @@
 package edu.tcu.cs.easybites.system.exception;
 
-import edu.tcu.cs.easybites.protein.utils.ProteinNotFoundException;
-import edu.tcu.cs.easybites.recipe.Recipe;
-import edu.tcu.cs.easybites.recipe.RecipeNotFoundException;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
-import jdk.jshell.Snippet;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -21,15 +17,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(RecipeNotFoundException.class)
+    @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handleRecipeNotFoundException(RecipeNotFoundException ex) {
-        return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
-    }
-
-    @ExceptionHandler(ProteinNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handleProteinNotFoundException(ProteinNotFoundException ex) {
+    Result handleObjectNotFoundException(ObjectNotFoundException ex) {
         return new Result(false, StatusCode.NOT_FOUND, ex.getMessage());
     }
 

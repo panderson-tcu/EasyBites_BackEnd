@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("${api.endpoint.base-url}/recipes")
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeToRecipeDtoConverter recipeToRecipeDtoConverter;
@@ -22,21 +23,21 @@ public class RecipeController {
         this.recipeDtoToRecipeConverter = recipeDtoToRecipeConverter;
     }
 
-    @GetMapping("/recipes/{recipeId}")
+    @GetMapping("/{recipeId}")
     public Result findRecipeById(@PathVariable Integer recipeId) {
         Recipe foundRecipe = this.recipeService.findById(recipeId);
         RecipeDto recipeDto = this.recipeToRecipeDtoConverter.convert(foundRecipe);
         return new Result(true, StatusCode.SUCCESS, "View recipe by id successful", recipeDto);
     }
 
-    @GetMapping("/recipes")
+    @GetMapping
     public Result findAllRecipes() {
         List<Recipe> foundRecipes = this.recipeService.findAll();
         List<RecipeDto> recipeDtos = recipeToRecipeDtoConverter.convertList(foundRecipes);
         return new Result(true, StatusCode.SUCCESS, "View all recipes successful", recipeDtos);
     }
 
-    @PostMapping("/recipes")
+    @PostMapping
     public Result addRecipe(@Valid @RequestBody RecipeDto recipeDto) {
         Recipe newRecipe = this.recipeDtoToRecipeConverter.convert(recipeDto);
         newRecipe.setStatus("pending");
@@ -45,13 +46,19 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Recipe submitted successfully", savedRecipeDto);
     }
 
-    @PutMapping("/recipes/{recipeId}")
+    @PutMapping("/{recipeId}")
     public Result updateRecipe(@PathVariable Integer recipeId, @Valid @RequestBody RecipeDto recipeDto) {
         Recipe update = this.recipeDtoToRecipeConverter.convert(recipeDto);
         Recipe updatedRecipe = this.recipeService.update(recipeId, update);
         RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
         return new Result(true, StatusCode.SUCCESS, "Recipe edited successfully", updatedRecipeDto);
 
+    }
+
+    @PutMapping("/{newStatus}/{recipeId}")
+    public Result changeRecipeStatus(@PathVariable String newStatus, @PathVariable Integer recipeId) {
+        this.recipeService.changeRecipeStatus(recipeId, newStatus);
+        return new Result(true, StatusCode.SUCCESS, "Recipe status changed successfully");
     }
 
 }
