@@ -73,4 +73,13 @@ public class RecipeService {
                 .orElseThrow(() -> new RecipeNotFoundException(recipeId));
 
     }
+
+    public void changeRecipeStatus(Integer recipeId, String newStatus) {
+        this.recipeRepository.findById(recipeId)
+                .map(oldRecipe -> {
+                    oldRecipe.setStatus(newStatus);
+                    return this.recipeRepository.save(oldRecipe);
+                })
+                .orElseThrow(() -> new RecipeNotFoundException(recipeId));
+    }
 }

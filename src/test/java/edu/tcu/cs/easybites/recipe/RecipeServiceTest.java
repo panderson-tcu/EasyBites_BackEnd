@@ -227,7 +227,6 @@ class RecipeServiceTest {
 
     @Test
     void testUpdateSuccess() {
-        // given
         //given
         Allergen a = new Allergen();
         a.setAllergenId(123);
@@ -248,9 +247,6 @@ class RecipeServiceTest {
         update.setIngredientsQuantity("new ingredients");
         update.addAllergen(a);
 
-
-
-
         given(recipeRepository.findById(110405679)).willReturn(Optional.of(update));
         given(recipeService.save(update)).willReturn(update);
 
@@ -263,6 +259,88 @@ class RecipeServiceTest {
         assertThat(updatedRecipe.getInstructions()).isEqualTo(update.getInstructions());
         verify(recipeRepository, times(1)).findById(110405679);
         verify(recipeRepository, times(1)).save(update);
+
+    }
+
+    @Test
+    void testUpdateNotFound() {
+        //given
+        Allergen a = new Allergen();
+        a.setAllergenId(123);
+        List<Allergen> list = new ArrayList<>();
+        list.add(a);
+
+        Recipe update = new Recipe();
+        update.setRecipeId(110405679);
+        update.setTitle("Recipe 1");
+        update.setInstructions("new instructions");
+        update.setIngredientsQuantity("new ingredients");
+        update.addAllergen(a);
+
+        given(recipeRepository.findById(110405679)).willReturn(Optional.empty());
+
+        // when
+        assertThrows(RecipeNotFoundException.class,
+                () -> recipeService.update(110405679, update));
+
+        // then
+        verify(recipeRepository, times(1)).findById(110405679);
+    }
+
+    @Test
+    void testChangeRecipeStatusSuccess() {
+        //given
+        Allergen a = new Allergen();
+        a.setAllergenId(123);
+        List<Allergen> list = new ArrayList<>();
+        list.add(a);
+
+        Recipe recipe = new Recipe();
+        recipe.setRecipeId(110405679);
+        recipe.setStatus("pending");
+        recipe.setTitle("Recipe 1");
+        recipe.setInstructions("preheat oven, chop onions");
+        recipe.setIngredientsQuantity("old ingredients");
+        recipe.addAllergen(a);
+
+        given(recipeRepository.findById(110405679)).willReturn(Optional.of(recipe));
+        given(recipeService.save(recipe)).willReturn(recipe);
+
+        // when
+        recipeService.changeRecipeStatus(110405679, "approved");
+
+        // then
+        assertThat(recipe.getRecipeId()).isEqualTo(110405679);
+        assertThat(recipe.getStatus()).isEqualTo("approved");
+        verify(recipeRepository, times(1)).findById(110405679);
+
+    }
+
+    @Test
+    void testChangeRecipeStatusNotFound() {
+        //given
+        Allergen a = new Allergen();
+        a.setAllergenId(123);
+        List<Allergen> list = new ArrayList<>();
+        list.add(a);
+
+        Recipe recipe = new Recipe();
+        recipe.setRecipeId(110405679);
+        recipe.setStatus("pending");
+        recipe.setTitle("Recipe 1");
+        recipe.setInstructions("preheat oven, chop onions");
+        recipe.setIngredientsQuantity("old ingredients");
+        recipe.addAllergen(a);
+
+        given(recipeRepository.findById(110405679)).willReturn(Optional.empty());
+
+        // when
+        assertThrows(RecipeNotFoundException.class,
+                () -> recipeService.changeRecipeStatus(110405679, "approved")
+        );
+
+        //then
+        verify(recipeRepository, times(1)).findById(110405679);
 
     }
 
