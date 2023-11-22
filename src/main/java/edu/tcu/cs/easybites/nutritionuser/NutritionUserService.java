@@ -30,4 +30,16 @@ public class NutritionUserService {
         return this.nutritionUserRepository.save(newNutritionUser);
     }
 
+    public NutritionUser update(Integer nutritionUserId, NutritionUser update){
+        return this.nutritionUserRepository.findById(nutritionUserId)
+                .map(oldNutritionUser -> {
+                    oldNutritionUser.setFirstName(update.getFirstName());
+                    oldNutritionUser.setLastName(update.getLastName());
+                    oldNutritionUser.setAdminLevel(update.getAdminLevel());
+                    oldNutritionUser.setEmail(update.getEmail());
+                    return this.nutritionUserRepository.save(oldNutritionUser);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("nutrition user", nutritionUserId));
+    }
+
 }

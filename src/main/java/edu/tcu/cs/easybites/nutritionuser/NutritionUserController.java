@@ -50,4 +50,12 @@ public class NutritionUserController {
         NutritionUserDto savedUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(savedUser);
         return new Result(true, StatusCode.SUCCESS, "Add user successful", savedUserDto);
     }
+
+    @PutMapping("/{nutritionUserId}")
+    public Result updateNutritionUser(@PathVariable Integer nutritionUserId, @Valid @RequestBody NutritionUserDto nutritionUserDto){
+        NutritionUser update = this.nutritionUserDtoToNutritionUserConverter.convert(nutritionUserDto);
+        NutritionUser updatedNutritionUser = this.nutritionUserService.update(nutritionUserId, update);
+        NutritionUserDto updatedNutritionUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(updatedNutritionUser);
+        return new Result(true, StatusCode.SUCCESS, "Nutrition user edited successfully", updatedNutritionUserDto);
+    }
 }
