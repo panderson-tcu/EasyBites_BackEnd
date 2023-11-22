@@ -70,14 +70,18 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser.setNutritionUserId(110409760);
         nutritionUser.setFirstName("Francisco");
         nutritionUser.setLastName("Alarcon");
-        nutritionUser.setAdminLevel("Nutrition Student");
+        nutritionUser.setAdminLevel("student");
+        nutritionUser.setEmail("f.alarcon@tcu.edu");
+        nutritionUser.setPassword("password");
 
 
         NutritionUser nutritionUser2 = new NutritionUser();
         nutritionUser2.setNutritionUserId(110409762);
         nutritionUser2.setFirstName("Paige");
         nutritionUser2.setLastName("Anderson");
-        nutritionUser2.setAdminLevel("Nutrition Admin");
+        nutritionUser2.setAdminLevel("admin");
+        nutritionUser2.setEmail("paige.anderson@tcu.edu");
+        nutritionUser2.setPassword("password");
 
 
         nutritionUserRepository.save(nutritionUser);
