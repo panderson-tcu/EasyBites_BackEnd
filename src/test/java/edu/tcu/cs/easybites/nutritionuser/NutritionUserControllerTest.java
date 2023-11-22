@@ -3,6 +3,7 @@ package edu.tcu.cs.easybites.nutritionuser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.tcu.cs.easybites.system.StatusCode;
+import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,6 +93,33 @@ public class NutritionUserControllerTest {
                 .andExpect(jsonPath("$.data[1].nutritionUserId").value(110409760))
                 .andExpect(jsonPath("$.data[1].firstName").value("Francisco"));
 
+    }
+
+    @Test
+    void testFindByIdSuccess() throws Exception {
+        // Given
+        given(this.nutritionUserService.findById(110401715)).willReturn(this.nutritionUsers.get(0));
+
+        // When and then
+        this.mockMvc.perform(get(this.baseUrl + "/nutrition-user/110401715").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("View nutrition user by id successful"))
+                .andExpect(jsonPath("$.data.nutritionUserId").value(110401715))
+                .andExpect(jsonPath("$.data.firstName").value("Paige"));
+    }
+
+    @Test
+    void testFindByIdNotFound() throws Exception {
+        // Given
+        given(this.nutritionUserService.findById(110401715)).willThrow(new ObjectNotFoundException("nutrition user", 110401715));
+
+        // When and then
+        this.mockMvc.perform(get(this.baseUrl + "/nutrition-user/110401715").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(false))
+                .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
+                .andExpect(jsonPath("$.message").value("Could not find nutrition user with ID 110401715."))
+                .andExpect(jsonPath("$.data").isEmpty());
     }
 
     @Test
