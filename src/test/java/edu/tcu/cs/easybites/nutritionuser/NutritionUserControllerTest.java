@@ -2,7 +2,9 @@ package edu.tcu.cs.easybites.nutritionuser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.tcu.cs.easybites.nutritionuser.dto.NutritionUserDto;
 import edu.tcu.cs.easybites.system.StatusCode;
+import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,14 +19,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+import static org.mockito.ArgumentMatchers.eq;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
@@ -95,6 +100,33 @@ public class NutritionUserControllerTest {
     }
 
     @Test
+    void testFindByIdSuccess() throws Exception {
+        // Given
+        given(this.nutritionUserService.findById(110401715)).willReturn(this.nutritionUsers.get(0));
+
+        // When and then
+        this.mockMvc.perform(get(this.baseUrl + "/nutrition-user/110401715").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("View nutrition user by id successful"))
+                .andExpect(jsonPath("$.data.nutritionUserId").value(110401715))
+                .andExpect(jsonPath("$.data.firstName").value("Paige"));
+    }
+
+    @Test
+    void testFindByIdNotFound() throws Exception {
+        // Given
+        given(this.nutritionUserService.findById(110401715)).willThrow(new ObjectNotFoundException("nutrition user", 110401715));
+
+        // When and then
+        this.mockMvc.perform(get(this.baseUrl + "/nutrition-user/110401715").accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(false))
+                .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
+                .andExpect(jsonPath("$.message").value("Could not find nutrition user with ID 110401715."))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
+
+    @Test
     void testAddUserSuccess() throws Exception {
         // given
         NutritionUser newUser = new NutritionUser();
@@ -121,5 +153,51 @@ public class NutritionUserControllerTest {
                 .andExpect(jsonPath("$.data.nutritionUserId").value(110401715))
                 .andExpect(jsonPath("$.data.firstName").value("Paige"))
                 .andExpect(jsonPath("$.data.adminLevel").value("admin"));
+    }
+
+    @Test
+    void testUpdateUserSuccess() throws Exception {
+        // Given
+//        NutritionUserDto nutritionUserDto = new NutritionUserDto(110401715, "Paige", "Anderson", "admin", "paige.anderson@tcu.edu");
+//
+//        String json = this.objectMapper.writeValueAsString(nutritionUserDto);
+
+        NutritionUser updatedNutritionUser = new NutritionUser();
+        updatedNutritionUser.setNutritionUserId(110401715);
+        updatedNutritionUser.setFirstName("Paige");
+        updatedNutritionUser.setLastName("Barber");
+        updatedNutritionUser.setEmail("paige.anderson@tcu.edu");
+        updatedNutritionUser.setAdminLevel("admin");
+
+        String json = this.objectMapper.writeValueAsString(updatedNutritionUser);
+
+
+        given(this.nutritionUserService.update(eq(110401715), Mockito.any(NutritionUser.class))).willReturn(updatedNutritionUser);
+
+        // When and then
+        this.mockMvc.perform(put(this.baseUrl + "/nutrition-user/110401715").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(true))
+                .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
+                .andExpect(jsonPath("$.message").value("Nutrition user edited successfully"))
+                .andExpect(jsonPath("$.data.nutritionUserId").value(110401715))
+                .andExpect(jsonPath("$.data.lastName").value("Barber"));
+    }
+
+    @Test
+    void testUpdateUserNotFound() throws Exception {
+        // given
+        given(this.nutritionUserService.update(eq(5), Mockito.any(NutritionUser.class)))
+                .willThrow(new ObjectNotFoundException("nutrition user", 5));
+
+        NutritionUserDto userDto = new NutritionUserDto(5, "first", "last", "admin", "f@gmail.com");
+        String json = this.objectMapper.writeValueAsString(userDto);
+
+        // when and then
+        this.mockMvc.perform(put(this.baseUrl + "/nutrition-user/5").contentType(MediaType.APPLICATION_JSON).content(json).accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.flag").value(false))
+                .andExpect(jsonPath("$.code").value(StatusCode.NOT_FOUND))
+                .andExpect(jsonPath("$.message").value("Could not find nutrition user with ID 5."))
+                .andExpect(jsonPath("$.data").isEmpty());
+
     }
 }

@@ -3,6 +3,8 @@ package edu.tcu.cs.easybites.nutritionuser;
 import edu.tcu.cs.easybites.nutritionuser.converter.NutritionUserDtoToNutritionUserConverter;
 import edu.tcu.cs.easybites.nutritionuser.converter.NutritionUserToNutritionUserDtoConverter;
 import edu.tcu.cs.easybites.nutritionuser.dto.NutritionUserDto;
+import edu.tcu.cs.easybites.recipe.Recipe;
+import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
 import jakarta.validation.Valid;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("${api.endpoint.base-url}")
+@RequestMapping("${api.endpoint.base-url}/nutrition-user")
 public class NutritionUserController {
 
     private final NutritionUserService nutritionUserService;
@@ -26,7 +28,7 @@ public class NutritionUserController {
         this.nutritionUserDtoToNutritionUserConverter = nutritionUserDtoToNutritionUserConverter;
     }
 
-    @GetMapping("/nutrition-user")
+    @GetMapping
     public Result findAllNutritionUsers(){
         List<NutritionUser> foundNutritionUsers = this.nutritionUserService.findAll();
         List<NutritionUserDto> nutritionUserDtos = nutritionUserToNutritionUserDtoConverter.convertList(foundNutritionUsers);
@@ -34,10 +36,26 @@ public class NutritionUserController {
 
     }
 
-    @PostMapping("/nutrition-user")
+    @GetMapping("/{nutritionUserId}")
+    public Result findNutritionUserById(@PathVariable Integer nutritionUserId){
+        NutritionUser foundNutritionUser = this.nutritionUserService.findById(nutritionUserId);
+        NutritionUserDto nutritionUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(foundNutritionUser);
+        return new Result(true, StatusCode.SUCCESS, "View nutrition user by id successful", nutritionUserDto);
+
+    }
+
+    @PostMapping
     public Result addNutritionUser(@Valid @RequestBody NutritionUser newNutritionUser) {
         NutritionUser savedUser = this.nutritionUserService.save(newNutritionUser);
         NutritionUserDto savedUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(savedUser);
         return new Result(true, StatusCode.SUCCESS, "Add user successful", savedUserDto);
+    }
+
+    @PutMapping("/{nutritionUserId}")
+    public Result updateNutritionUser(@PathVariable Integer nutritionUserId, @Valid @RequestBody NutritionUserDto nutritionUserDto){
+        NutritionUser update = this.nutritionUserDtoToNutritionUserConverter.convert(nutritionUserDto);
+        NutritionUser updatedNutritionUser = this.nutritionUserService.update(nutritionUserId, update);
+        NutritionUserDto updatedNutritionUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(updatedNutritionUser);
+        return new Result(true, StatusCode.SUCCESS, "Nutrition user edited successfully", updatedNutritionUserDto);
     }
 }
