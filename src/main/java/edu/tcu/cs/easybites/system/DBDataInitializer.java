@@ -8,6 +8,7 @@ import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.ingredient.IngredientRepository;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUserRepository;
+import edu.tcu.cs.easybites.nutritionuser.NutritionUserService;
 import edu.tcu.cs.easybites.protein.Protein;
 import edu.tcu.cs.easybites.protein.ProteinRepository;
 import edu.tcu.cs.easybites.recipe.Recipe;
@@ -24,17 +25,21 @@ public class DBDataInitializer implements CommandLineRunner {
     private final RecipeRepository recipeRepository;
     private final AllergenRepository allergenRepository;
     private final ProteinRepository proteinRepository;
-    private final NutritionUserRepository nutritionUserRepository;
+    private final NutritionUserService nutritionUserService;
     private final IngredientRepository ingredientRepository;
     private final ApplianceRepository applianceRepository;
 
-    public DBDataInitializer(RecipeRepository recipeRepository, AllergenRepository allergenRepository,
-                             ProteinRepository proteinRepository, NutritionUserRepository nutritionUserRepository,
-                             IngredientRepository ingredientRepository, ApplianceRepository applianceRepository) {
+
+    public DBDataInitializer(RecipeRepository recipeRepository,
+                             AllergenRepository allergenRepository,
+                             ProteinRepository proteinRepository,
+                             NutritionUserService nutritionUserService,
+                             IngredientRepository ingredientRepository,
+                             ApplianceRepository applianceRepository) {
         this.recipeRepository = recipeRepository;
         this.allergenRepository = allergenRepository;
         this.proteinRepository = proteinRepository;
-        this.nutritionUserRepository = nutritionUserRepository;
+        this.nutritionUserService = nutritionUserService;
         this.ingredientRepository = ingredientRepository;
         this.applianceRepository = applianceRepository;
     }
@@ -70,7 +75,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser.setNutritionUserId(110409760);
         nutritionUser.setFirstName("Francisco");
         nutritionUser.setLastName("Alarcon");
-        nutritionUser.setAdminLevel("student");
+        nutritionUser.setAdminLevel("admin");
         nutritionUser.setEmail("f.alarcon@tcu.edu");
         nutritionUser.setPassword("password");
 
@@ -84,8 +89,8 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setPassword("password");
 
 
-        nutritionUserRepository.save(nutritionUser);
-        nutritionUserRepository.save(nutritionUser2);
+        this.nutritionUserService.save(nutritionUser);
+        this.nutritionUserService.save(nutritionUser2);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
@@ -156,8 +161,8 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe3.setInstructions("Preheat grill.\nSeason salmon with salt and pepper.\nGrill for 6 minutes per side...");
         recipe3.setServings(3);
 
-        recipeRepository.save(recipe1);
-        recipeRepository.save(recipe2);
-        recipeRepository.save(recipe3);
+        this.recipeRepository.save(recipe1);
+        this.recipeRepository.save(recipe2);
+        this.recipeRepository.save(recipe3);
     }
 }
