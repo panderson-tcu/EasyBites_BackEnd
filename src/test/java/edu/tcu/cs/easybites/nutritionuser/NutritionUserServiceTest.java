@@ -15,12 +15,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -148,5 +150,62 @@ public class NutritionUserServiceTest {
                 .isInstanceOf(ObjectNotFoundException.class)
                 .hasMessage("Could not find nutrition user with ID 110401715.");
         verify(nutritionUserRepository, times(1)).findById(110401715);
+    }
+
+    @Test
+    void testUpdateUserSuccess() {
+        // given
+        NutritionUser oldUser = new NutritionUser();
+        oldUser.setNutritionUserId(110401715);
+        oldUser.setFirstName("Paige");
+        oldUser.setLastName("Anderson");
+        oldUser.setEmail("paige.anderson@tcu.edu");
+        oldUser.setAdminLevel("user");
+
+        NutritionUser update = new NutritionUser();
+        update.setNutritionUserId(110401715);
+        update.setFirstName("New");
+        update.setLastName("Last");
+        update.setEmail("paige.anderson@tcu.edu");
+        update.setAdminLevel("admin");
+
+        given(this.nutritionUserRepository.findById(110401715)).willReturn(Optional.of(oldUser));
+        given(this.nutritionUserRepository.save(oldUser)).willReturn(oldUser);
+
+        // when
+        NutritionUser updatedUser = this.nutritionUserService.update(110401715, update);
+
+        // then
+        assertThat(updatedUser.getNutritionUserId()).isEqualTo(110401715);
+        assertThat(updatedUser.getAdminLevel()).isEqualTo("admin");
+        assertThat(updatedUser.getFirstName()).isEqualTo("New");
+        assertThat(updatedUser.getLastName()).isEqualTo("Last");
+        verify(nutritionUserRepository, times(1)).findById(110401715);
+        verify(nutritionUserRepository, times(1)).save(oldUser);
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        // given
+        NutritionUser update = new NutritionUser();
+        update.setNutritionUserId(110401715);
+        update.setFirstName("Paige - new");
+        update.setLastName("Anderson");
+        update.setEmail("paige.anderson@tcu.edu");
+        update.setAdminLevel("user");
+
+        given(this.nutritionUserRepository.findById(1)).willReturn(Optional.empty());
+
+        // when
+        Throwable thrown = assertThrows(ObjectNotFoundException.class, () -> {
+            this.nutritionUserService.update(1, update);
+        });
+
+        // then
+        assertThat(thrown)
+                .isInstanceOf(ObjectNotFoundException.class)
+                .hasMessage("Could not find nutrition user with ID 1.");
+        verify(this.nutritionUserRepository, times(1)).findById(1);
+
     }
 }
