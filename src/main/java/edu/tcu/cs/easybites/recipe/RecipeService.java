@@ -60,7 +60,7 @@ public class RecipeService {
                     oldRecipe.setEstimatedCost(update.getEstimatedCost());
                     oldRecipe.setInstructions(update.getInstructions());
                     oldRecipe.setServings(update.getServings());
-                    oldRecipe.setStatus(update.getStatus());
+                    oldRecipe.setStatus("pending");
                     oldRecipe.setProtein(update.getProtein());
                     oldRecipe.setIngredients(update.getIngredients());
                     oldRecipe.setAppliances(update.getAppliances());

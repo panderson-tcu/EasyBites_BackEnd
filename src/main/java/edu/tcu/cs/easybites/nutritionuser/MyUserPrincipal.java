@@ -3,8 +3,10 @@ package edu.tcu.cs.easybites.nutritionuser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,10 +20,9 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = "ROLE_" + this.nutritionUser.getAdminLevel(); // create role string from NutritionUser.adminLevel
-        List<SimpleGrantedAuthority> roles = new ArrayList<>(); // instantiate a list because this method requires a collection o SimpleGrantedAuthority
-        roles.add(new SimpleGrantedAuthority(role)); // add role to list
-        return roles;
+        return Arrays.stream(StringUtils.tokenizeToStringArray(this.nutritionUser.getAdminLevel(), " "))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .toList();
     }
 
     @Override
