@@ -67,7 +67,8 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, this.baseUrl + "/nutrition-user/**")).hasAuthority("ROLE_admin")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll() // h2 console
 
-                        .anyRequest().authenticated() // always good idea to put this as last to authenticate everything else.
+//                        .anyRequest().authenticated() // always good idea to put this as last to authenticate everything else.
+                                .anyRequest().permitAll()
 
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
