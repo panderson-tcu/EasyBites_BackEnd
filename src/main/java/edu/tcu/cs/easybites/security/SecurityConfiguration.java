@@ -67,8 +67,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // All recipe API endpoints should require authentication
                         // Here we only specify PUT - update recipe status for admins only
-                        // TODO : fix error where students can't edit recipes because of line 61
-                        .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, this.baseUrl + "/recipes/**/**")).hasAuthority("ROLE_admin")
+                        .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, this.baseUrl + "/recipes/{newStatus}/{recipeId}")).hasAuthority("ROLE_admin")
 
                         // nutrition-user api endpoints
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, this.baseUrl + "/nutrition-user/**")).hasAuthority("ROLE_admin")
