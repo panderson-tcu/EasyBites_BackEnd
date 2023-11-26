@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.swing.text.html.Option;
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class NutritionUserServiceTest {
 
     @InjectMocks
     NutritionUserService nutritionUserService;
+
+    @Mock
+    PasswordEncoder passwordEncoder;
 
     List<NutritionUser> nutritionUsers;
 
@@ -122,6 +126,7 @@ public class NutritionUserServiceTest {
         newUser.setEmail("paige.anderson@tcu.edu");
         newUser.setAdminLevel("admin");
 
+        given(this.passwordEncoder.encode(newUser.getPassword())).willReturn("Encoded Password");
         given(this.nutritionUserRepository.save(newUser)).willReturn(newUser);
 
         // when

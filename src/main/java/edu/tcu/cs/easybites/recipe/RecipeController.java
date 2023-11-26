@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/recipes")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeToRecipeDtoConverter recipeToRecipeDtoConverter;

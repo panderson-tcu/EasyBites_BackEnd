@@ -3,8 +3,11 @@ package edu.tcu.cs.easybites.system.exception;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -50,4 +53,32 @@ public class ExceptionHandlerAdvice {
         return new Result(false, StatusCode.UNAUTHORIZED,"username or password is incorrect", ex.getMessage());
     }
 
+    @ExceptionHandler(AccountStatusException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    Result handleAccountStatusException(AccountStatusException ex) {
+        return new Result(false, StatusCode.UNAUTHORIZED,"User account is abnormal.", ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidBearerTokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    Result handleInvalidBearerTokenException(InvalidBearerTokenException ex) {
+        return new Result(false, StatusCode.UNAUTHORIZED,"The access token provided is expired, revoked, malformed, or invalid for other reasons.", ex.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    Result handleAccessDeniedException(AccessDeniedException ex) {
+        return new Result(false, StatusCode.FORBIDDEN,"No permission.", ex.getMessage());
+    }
+
+    /**
+     *  Fallback handles unhandled exceptions.
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    Result handleOtherException(Exception ex) {
+        return new Result(false, StatusCode.INTERNAL_SERVER_ERROR,"Internal server error occurs.", ex.getMessage());
+    }
 }

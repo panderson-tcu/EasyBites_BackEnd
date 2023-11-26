@@ -41,8 +41,18 @@ public class SecurityConfiguration {
     @Value("${api.endpoint.base-url}")
     private String baseUrl;
 
+    private final CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint;
 
-    public SecurityConfiguration() throws NoSuchAlgorithmException {
+    private final CustomBearerTokenAuthenticationEntryPoint customBearerTokenAuthenticationEntryPoint;
+
+    private final CustomBearerTokenAccessDeniedHandler customBearerTokenAccessDeniedHandler;
+
+    public SecurityConfiguration(CustomBasicAuthenticationEntryPoint customBasicAuthenticationEntryPoint,
+                                 CustomBearerTokenAuthenticationEntryPoint customBearerTokenAuthenticationEntryPoint,
+                                 CustomBearerTokenAccessDeniedHandler customBearerTokenAccessDeniedHandler) throws NoSuchAlgorithmException {
+        this.customBasicAuthenticationEntryPoint = customBasicAuthenticationEntryPoint;
+        this.customBearerTokenAuthenticationEntryPoint = customBearerTokenAuthenticationEntryPoint;
+        this.customBearerTokenAccessDeniedHandler = customBearerTokenAccessDeniedHandler;
         // Generate public / private key pair in java
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA"); // use factory pattern to generate a keypairgenerator with RSA algorithm
         keyPairGenerator.initialize(2048); // generated key will have a size of 2048 bits
@@ -67,16 +77,21 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, this.baseUrl + "/nutrition-user/**")).hasAuthority("ROLE_admin")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll() // h2 console
 
-//                        .anyRequest().authenticated() // always good idea to put this as last to authenticate everything else.
-                                .anyRequest().permitAll()
+                        .anyRequest().authenticated() // always good idea to put this as last to authenticate everything else.
+//                                .anyRequest().permitAll()
 
                 )
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults())
-               .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()))
-               .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-               .build();
+               .cors(Customizer.withDefaults())
+                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.customBasicAuthenticationEntryPoint))
+               .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(
+                       jwt -> jwt.decoder(jwtDecoder())
+                               .jwtAuthenticationConverter(jwtAuthenticationConverter())
+               ).authenticationEntryPoint(this.customBearerTokenAuthenticationEntryPoint)
+                       .accessDeniedHandler(this.customBearerTokenAccessDeniedHandler))
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
     }
 
     @Bean

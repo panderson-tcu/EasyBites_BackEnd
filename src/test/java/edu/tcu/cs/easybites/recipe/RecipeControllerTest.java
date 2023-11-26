@@ -17,6 +17,7 @@ import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.StatusCode;
 import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import org.hamcrest.Matchers;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.ArrayList;
@@ -35,10 +40,11 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false) // Turn off spring security
 class RecipeControllerTest {
     @Autowired
     MockMvc mockMvc;
@@ -49,13 +55,15 @@ class RecipeControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    String token;
+
     List<Recipe> recipes;
 
     @Value("${api.endpoint.base-url}")
     String baseUrl;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         this.recipes = new ArrayList<>();
 
         Allergen allergen = new Allergen();
