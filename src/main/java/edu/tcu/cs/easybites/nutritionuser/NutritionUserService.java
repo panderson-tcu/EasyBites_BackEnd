@@ -2,18 +2,25 @@ package edu.tcu.cs.easybites.nutritionuser;
 
 import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class NutritionUserService {
+public class NutritionUserService implements UserDetailsService {
 
     private final NutritionUserRepository nutritionUserRepository;
 
-    public NutritionUserService(NutritionUserRepository nutritionUserRepository) {
+    private PasswordEncoder passwordEncoder;
+
+    public NutritionUserService(NutritionUserRepository nutritionUserRepository, PasswordEncoder passwordEncoder) {
         this.nutritionUserRepository = nutritionUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<NutritionUser> findAll(){
@@ -26,7 +33,8 @@ public class NutritionUserService {
     }
 
     public NutritionUser save(NutritionUser newNutritionUser) {
-        // NEED TO ENCODE PLAIN PASSWORD BEFORE SAVING TO DB TODO
+        // NEED TO ENCODE PLAIN text PASSWORD BEFORE SAVING TO DB TODO
+        newNutritionUser.setPassword(this.passwordEncoder.encode(newNutritionUser.getPassword()));
         return this.nutritionUserRepository.save(newNutritionUser);
     }
 
@@ -42,4 +50,10 @@ public class NutritionUserService {
                 .orElseThrow(() -> new ObjectNotFoundException("nutrition user", nutritionUserId));
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.nutritionUserRepository.findByEmail(username) // find user from database
+                .map(nutritionUser -> new MyUserPrincipal(nutritionUser)) //if found, wrap returned user instance in MyUserPrincipal instance
+                .orElseThrow(() -> new UsernameNotFoundException("username " + username + " is not found.")); // otherwise, throw an exception
+    }
 }

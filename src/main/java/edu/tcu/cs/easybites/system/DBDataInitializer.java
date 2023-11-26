@@ -8,32 +8,35 @@ import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.ingredient.IngredientRepository;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.nutritionuser.NutritionUserRepository;
+import edu.tcu.cs.easybites.nutritionuser.NutritionUserService;
 import edu.tcu.cs.easybites.protein.Protein;
 import edu.tcu.cs.easybites.protein.ProteinRepository;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.RecipeRepository;
-import edu.tcu.cs.easybites.recipe.RecipeService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DBDataInitializer implements CommandLineRunner {
     private final RecipeRepository recipeRepository;
     private final AllergenRepository allergenRepository;
     private final ProteinRepository proteinRepository;
+    private final NutritionUserService nutritionUserService;
     private final NutritionUserRepository nutritionUserRepository;
     private final IngredientRepository ingredientRepository;
     private final ApplianceRepository applianceRepository;
 
-    public DBDataInitializer(RecipeRepository recipeRepository, AllergenRepository allergenRepository,
-                             ProteinRepository proteinRepository, NutritionUserRepository nutritionUserRepository,
-                             IngredientRepository ingredientRepository, ApplianceRepository applianceRepository) {
+
+    public DBDataInitializer(RecipeRepository recipeRepository,
+                             AllergenRepository allergenRepository,
+                             ProteinRepository proteinRepository,
+                             NutritionUserService nutritionUserService,
+                             NutritionUserRepository nutritionUserRepository, IngredientRepository ingredientRepository,
+                             ApplianceRepository applianceRepository) {
         this.recipeRepository = recipeRepository;
         this.allergenRepository = allergenRepository;
         this.proteinRepository = proteinRepository;
+        this.nutritionUserService = nutritionUserService;
         this.nutritionUserRepository = nutritionUserRepository;
         this.ingredientRepository = ingredientRepository;
         this.applianceRepository = applianceRepository;
@@ -45,13 +48,47 @@ public class DBDataInitializer implements CommandLineRunner {
         milk.setName("Milk");
         milk.setAllergenId(2000);
 
+        Allergen eggs = new Allergen();
+        eggs.setName("Eggs");
+        eggs.setAllergenId(2001);
+
         Allergen peanuts = new Allergen();
         peanuts.setName("Peanuts");
         peanuts.setAllergenId(2002);
 
-        allergenRepository.save(milk);
-        allergenRepository.save(peanuts);
+        Allergen treeNuts = new Allergen();
+        treeNuts.setName("Tree Nuts");
+        treeNuts.setAllergenId(2003);
 
+        Allergen soy = new Allergen();
+        soy.setName("Soy");
+        soy.setAllergenId(2004);
+
+        Allergen wheat = new Allergen();
+        wheat.setName("Wheat");
+        wheat.setAllergenId(2005);
+
+        Allergen shellfish = new Allergen();
+        shellfish.setName("Shellfish");
+        shellfish.setAllergenId(2006);
+
+        Allergen fish = new Allergen();
+        fish.setName("Fish");
+        fish.setAllergenId(2007);
+
+        Allergen none = new Allergen();
+        none.setName("None");
+        none.setAllergenId(2008);
+
+        allergenRepository.save(milk);
+        allergenRepository.save(eggs);
+        allergenRepository.save(peanuts);
+        allergenRepository.save(treeNuts);
+        allergenRepository.save(soy);
+        allergenRepository.save(wheat);
+        allergenRepository.save(shellfish);
+        allergenRepository.save(fish);
+        allergenRepository.save(none);
 
         // Create Protein
         Protein chicken = new Protein();
@@ -62,15 +99,36 @@ public class DBDataInitializer implements CommandLineRunner {
         beef.setProteinName("Beef");
         beef.setProteinId(1001);
 
+        Protein pork = new Protein();
+        pork.setProteinName("Pork");
+        pork.setProteinId(1002);
+
+        Protein tofu = new Protein();
+        tofu.setProteinName("Tofu");
+        tofu.setProteinId(1003);
+
+        Protein seafood = new Protein();
+        seafood.setProteinName("Seafood");
+        seafood.setProteinId(1004);
+
+        Protein noneProtein = new Protein();
+        noneProtein.setProteinName("None");
+        noneProtein.setProteinId(1005);
+
         proteinRepository.save(chicken);
         proteinRepository.save(beef);
+        proteinRepository.save(pork);
+        proteinRepository.save(tofu);
+        proteinRepository.save(seafood);
+        proteinRepository.save(noneProtein);
+
 
         // Create NutritionUser
         NutritionUser nutritionUser = new NutritionUser();
         nutritionUser.setNutritionUserId(110409760);
         nutritionUser.setFirstName("Francisco");
         nutritionUser.setLastName("Alarcon");
-        nutritionUser.setAdminLevel("student");
+        nutritionUser.setAdminLevel("admin");
         nutritionUser.setEmail("f.alarcon@tcu.edu");
         nutritionUser.setPassword("password");
 
@@ -84,8 +142,11 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setPassword("password");
 
 
-        nutritionUserRepository.save(nutritionUser);
-        nutritionUserRepository.save(nutritionUser2);
+        this.nutritionUserService.save(nutritionUser);
+        this.nutritionUserService.save(nutritionUser2);
+
+        this.nutritionUserRepository.save(nutritionUser);
+        this.nutritionUserRepository.save(nutritionUser2);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
@@ -100,16 +161,46 @@ public class DBDataInitializer implements CommandLineRunner {
         ingredientRepository.save(i3);
 
         // Create Appliance
-        Appliance appliance = new Appliance();
-        appliance.setName("Air Fryer");
-        appliance.setApplianceId(3000);
+        Appliance airFryer = new Appliance();
+        airFryer.setName("Air Fryer");
+        airFryer.setApplianceId(3000);
 
-        Appliance appliance2 = new Appliance();
-        appliance2.setName("Crockpot");
-        appliance2.setApplianceId(3001);
+        Appliance crockpot = new Appliance();
+        crockpot.setName("Crockpot");
+        crockpot.setApplianceId(3001);
 
-        applianceRepository.save(appliance);
-        applianceRepository.save(appliance2);
+        Appliance stove = new Appliance();
+        stove.setName("Stove");
+        stove.setApplianceId(3002);
+
+        Appliance oven = new Appliance();
+        oven.setName("Oven");
+        oven.setApplianceId(3003);
+
+        Appliance microwave = new Appliance();
+        microwave.setName("Microwave");
+        microwave.setApplianceId(3004);
+
+        Appliance blender = new Appliance();
+        blender.setName("Blender");
+        blender.setApplianceId(3005);
+
+        Appliance instantPot = new Appliance();
+        instantPot.setName("Instant Pot");
+        instantPot.setApplianceId(3006);
+
+        Appliance noneAppliance = new Appliance();
+        noneAppliance.setName("None");
+        noneAppliance.setApplianceId(3007);
+
+        applianceRepository.save(airFryer);
+        applianceRepository.save(crockpot);
+        applianceRepository.save(stove);
+        applianceRepository.save(oven);
+        applianceRepository.save(microwave);
+        applianceRepository.save(blender);
+        applianceRepository.save(instantPot);
+        applianceRepository.save(noneAppliance);
 
 
         // Create Recipe 1
@@ -124,8 +215,8 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe1.setRecipeOwner(nutritionUser);
         recipe1.addIngredient(i1);
         recipe1.addIngredient(i2);
-        recipe1.addAppliance(appliance);
-        recipe1.addAppliance(appliance2);
+        recipe1.addAppliance(airFryer);
+        recipe1.addAppliance(stove);
         recipe1.addAllergen(milk);
         recipe1.addAllergen(peanuts);
 
@@ -156,8 +247,8 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe3.setInstructions("Preheat grill.\nSeason salmon with salt and pepper.\nGrill for 6 minutes per side...");
         recipe3.setServings(3);
 
-        recipeRepository.save(recipe1);
-        recipeRepository.save(recipe2);
-        recipeRepository.save(recipe3);
+        this.recipeRepository.save(recipe1);
+        this.recipeRepository.save(recipe2);
+        this.recipeRepository.save(recipe3);
     }
 }

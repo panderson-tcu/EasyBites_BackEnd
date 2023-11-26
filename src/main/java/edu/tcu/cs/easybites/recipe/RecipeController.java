@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/recipes")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeToRecipeDtoConverter recipeToRecipeDtoConverter;
@@ -52,7 +53,6 @@ public class RecipeController {
         Recipe updatedRecipe = this.recipeService.update(recipeId, update);
         RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
         return new Result(true, StatusCode.SUCCESS, "Recipe edited successfully", updatedRecipeDto);
-
     }
 
     @PutMapping("/{newStatus}/{recipeId}")
