@@ -142,7 +142,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setPassword("password");
 
         NutritionUser nutritionUser3 = new NutritionUser();
-        nutritionUser3.setNutritionUserId(110409762);
+        nutritionUser3.setNutritionUserId(111111);
         nutritionUser3.setFirstName("Anna");
         nutritionUser3.setLastName("Gadbois");
         nutritionUser3.setAdminLevel("admin");
