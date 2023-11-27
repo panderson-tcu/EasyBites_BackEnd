@@ -141,12 +141,23 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setEmail("paige.anderson@tcu.edu");
         nutritionUser2.setPassword("password");
 
+        NutritionUser nutritionUser3 = new NutritionUser();
+        nutritionUser3.setNutritionUserId(110409762);
+        nutritionUser3.setFirstName("Anna");
+        nutritionUser3.setLastName("Gadbois");
+        nutritionUser3.setAdminLevel("admin");
+        nutritionUser3.setEmail("anna");
+        nutritionUser3.setPassword("password");
+
+
 
         this.nutritionUserService.save(nutritionUser);
         this.nutritionUserService.save(nutritionUser2);
+        this.nutritionUserService.save(nutritionUser3);
 
         this.nutritionUserRepository.save(nutritionUser);
         this.nutritionUserRepository.save(nutritionUser2);
+        this.nutritionUserRepository.save(nutritionUser3);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
