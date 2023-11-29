@@ -142,22 +142,42 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setPassword("password");
 
         NutritionUser nutritionUser3 = new NutritionUser();
-        nutritionUser3.setNutritionUserId(111111);
+        nutritionUser3.setNutritionUserId(110400159);
         nutritionUser3.setFirstName("Anna");
         nutritionUser3.setLastName("Gadbois");
         nutritionUser3.setAdminLevel("admin");
-        nutritionUser3.setEmail("anna");
+        nutritionUser3.setEmail("anna.j.gadbois@tcu.edu");
         nutritionUser3.setPassword("password");
 
+        NutritionUser nutritionUser4 = new NutritionUser();
+        nutritionUser4.setNutritionUserId(5000);
+        nutritionUser4.setFirstName("John");
+        nutritionUser4.setLastName("Smith");
+        nutritionUser4.setAdminLevel("student");
+        nutritionUser4.setEmail("john@gmail.com");
+        nutritionUser4.setPassword("password");
+
+        NutritionUser nutritionUser5 = new NutritionUser();
+        nutritionUser5.setNutritionUserId(1005);
+        nutritionUser5.setFirstName("Jessica");
+        nutritionUser5.setLastName("Scott");
+        nutritionUser5.setAdminLevel("student");
+        nutritionUser5.setEmail("jscott@gmail.com");
+        nutritionUser5.setPassword("password");
 
 
         this.nutritionUserService.save(nutritionUser);
         this.nutritionUserService.save(nutritionUser2);
         this.nutritionUserService.save(nutritionUser3);
+        this.nutritionUserService.save(nutritionUser4);
+        this.nutritionUserService.save(nutritionUser5);
+
 
         this.nutritionUserRepository.save(nutritionUser);
         this.nutritionUserRepository.save(nutritionUser2);
         this.nutritionUserRepository.save(nutritionUser3);
+        this.nutritionUserRepository.save(nutritionUser4);
+        this.nutritionUserRepository.save(nutritionUser5);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
@@ -213,7 +233,6 @@ public class DBDataInitializer implements CommandLineRunner {
         applianceRepository.save(instantPot);
         applianceRepository.save(noneAppliance);
 
-
         // Create Recipe 1
         Recipe recipe1 = new Recipe();
         recipe1.setTitle("Enchilada Casserole");
@@ -230,9 +249,8 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe1.addAppliance(stove);
         recipe1.addAllergen(milk);
         recipe1.addAllergen(peanuts);
-
-
-
+        recipe1.setStatus("pending");
+//        recipe1.setRecipeOwner(nutritionUser4);
 
         // Create Recipe 2
         Recipe recipe2 = new Recipe();
@@ -244,8 +262,10 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe2.setServings(4);
         recipe2.setRecipeOwner(nutritionUser2);
         recipe2.setProtein(beef);
+        recipe2.setStatus("approved");
         recipe2.addIngredient(i1);
         recipe2.addIngredient(i2);
+        recipe2.setRecipeOwner(nutritionUser3);
 
         // Set different Protein, NutritionUser, Ingredients, and Appliances as needed for Recipe 2
 
@@ -255,8 +275,11 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe3.setCookTime(12);
         recipe3.setIngredientsQuantity("1 lb Salmon fillets\n1 lemon\n");
         recipe3.setEstimatedCost(8.00);
+        recipe3.setProtein(chicken);
+        recipe3.setStatus("approved");
         recipe3.setInstructions("Preheat grill.\nSeason salmon with salt and pepper.\nGrill for 6 minutes per side...");
         recipe3.setServings(3);
+        recipe3.setRecipeOwner(nutritionUser2);
 
         this.recipeRepository.save(recipe1);
         this.recipeRepository.save(recipe2);
