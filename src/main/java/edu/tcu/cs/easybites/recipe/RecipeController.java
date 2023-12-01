@@ -61,6 +61,13 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Recipe status changed successfully");
     }
 
+    @GetMapping("nutrition-user/{nutritionUserId}")
+    public Result findRecipesByUserId(@PathVariable Integer nutritionUserId) {
+        List<Recipe> foundRecipes = recipeService.findRecipesByUserId(nutritionUserId);
+        List<RecipeDto> recipeDtos = this.recipeToRecipeDtoConverter.convertList(foundRecipes);
+        return new Result(true, StatusCode.SUCCESS, "Find recipe by user id successful.", recipeDtos);
+    }
+
 }
 
 

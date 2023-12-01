@@ -37,10 +37,12 @@ public class Recipe implements Serializable {
 
     // foreign key to protein's PK (one to one)
     @ManyToOne
+    @JoinColumn(name = "protein_id")
     private Protein protein;
 
     // foreign key to nutriton_user's PK (one to one)
     @ManyToOne
+    @JoinColumn(name = "recipe_owner_id")
     private NutritionUser recipeOwner;
 
 

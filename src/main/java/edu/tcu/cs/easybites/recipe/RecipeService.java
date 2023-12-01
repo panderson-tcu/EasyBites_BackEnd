@@ -15,9 +15,6 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
 
-//    private final IdWorker idWorker;
-
-
     public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
@@ -79,5 +76,9 @@ public class RecipeService {
                     return this.recipeRepository.save(oldRecipe);
                 })
                 .orElseThrow(() -> new ObjectNotFoundException("recipe", recipeId));
+    }
+
+    public List<Recipe> findRecipesByUserId(Integer nutritionUserId) {
+        return this.recipeRepository.findAllByRecipeOwner_NutritionUserId(nutritionUserId);
     }
 }
