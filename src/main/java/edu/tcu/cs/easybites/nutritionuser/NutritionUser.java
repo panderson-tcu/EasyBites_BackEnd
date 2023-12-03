@@ -23,6 +23,8 @@ public class NutritionUser implements Serializable {
     private String adminLevel;
     @NotEmpty(message = "email  is required.")
     private String email;
+
+    private boolean enabled;
     @NotEmpty(message = "password is required.")
     private String password;
 
@@ -87,6 +89,14 @@ public class NutritionUser implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void addRecipe(Recipe recipe) {

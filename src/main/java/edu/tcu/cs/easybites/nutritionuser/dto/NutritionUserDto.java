@@ -13,6 +13,7 @@ public record NutritionUserDto(Integer nutritionUserId,
                                @NotEmpty(message = "admin level is required.")
                                String adminLevel,
                                @NotEmpty(message = "email  is required.")
-                               String email
+                               String email,
+                               boolean enabled
                                ) {
 }

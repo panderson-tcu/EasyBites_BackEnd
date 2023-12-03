@@ -56,4 +56,13 @@ public class NutritionUserService implements UserDetailsService {
                 .map(nutritionUser -> new MyUserPrincipal(nutritionUser)) //if found, wrap returned user instance in MyUserPrincipal instance
                 .orElseThrow(() -> new UsernameNotFoundException("username " + username + " is not found.")); // otherwise, throw an exception
     }
+
+    public void changeAccountStatus(String newStatus, Integer nutritionUserId) {
+        this.nutritionUserRepository.findById(nutritionUserId)
+                .map(oldUser -> {
+                    oldUser.setEnabled(Boolean.parseBoolean(newStatus));
+                    return this.nutritionUserRepository.save(oldUser);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("nutrition user", nutritionUserId));
+    }
 }

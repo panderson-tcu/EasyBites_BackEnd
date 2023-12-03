@@ -52,7 +52,7 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return nutritionUser.isEnabled();
     }
 
     public NutritionUser getNutritionUser() {
