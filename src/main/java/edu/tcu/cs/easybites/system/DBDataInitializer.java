@@ -131,6 +131,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser.setAdminLevel("admin");
         nutritionUser.setEmail("f.alarcon@tcu.edu");
         nutritionUser.setPassword("password");
+        nutritionUser.setEnabled(true);
 
 
         NutritionUser nutritionUser2 = new NutritionUser();
@@ -140,6 +141,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser2.setAdminLevel("admin");
         nutritionUser2.setEmail("paige.anderson@tcu.edu");
         nutritionUser2.setPassword("password");
+        nutritionUser2.setEnabled(true);
 
         NutritionUser nutritionUser3 = new NutritionUser();
         nutritionUser3.setNutritionUserId(110400159);
@@ -148,6 +150,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser3.setAdminLevel("admin");
         nutritionUser3.setEmail("anna.j.gadbois@tcu.edu");
         nutritionUser3.setPassword("password");
+        nutritionUser3.setEnabled(true);
 
         NutritionUser nutritionUser4 = new NutritionUser();
         nutritionUser4.setNutritionUserId(5000);
@@ -156,6 +159,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser4.setAdminLevel("student");
         nutritionUser4.setEmail("john@gmail.com");
         nutritionUser4.setPassword("password");
+        nutritionUser4.setEnabled(true);
 
         NutritionUser nutritionUser5 = new NutritionUser();
         nutritionUser5.setNutritionUserId(1005);
@@ -164,6 +168,7 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser5.setAdminLevel("student");
         nutritionUser5.setEmail("jscott@gmail.com");
         nutritionUser5.setPassword("password");
+        nutritionUser5.setEnabled(true);
 
 
         this.nutritionUserService.save(nutritionUser);

@@ -25,7 +25,8 @@ public class NutritionUserToNutritionUserDtoConverter implements Converter<Nutri
                                                                  source.getFirstName(),
                                                                 source.getLastName(),
                                                                 source.getAdminLevel(),
-                                                                source.getEmail()
+                                                                source.getEmail(),
+                                                                source.isEnabled()
 //                                                                    source.getRecipes() != null
 //                                                                            ? this.recipeToRecipeDtoConverter.convertList(source.getRecipes())
 //                                                                            : null

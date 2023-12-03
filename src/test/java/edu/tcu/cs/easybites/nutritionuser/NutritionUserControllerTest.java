@@ -189,7 +189,7 @@ public class NutritionUserControllerTest {
         given(this.nutritionUserService.update(eq(5), Mockito.any(NutritionUser.class)))
                 .willThrow(new ObjectNotFoundException("nutrition user", 5));
 
-        NutritionUserDto userDto = new NutritionUserDto(5, "first", "last", "admin", "f@gmail.com");
+        NutritionUserDto userDto = new NutritionUserDto(5, "first", "last", "admin", "f@gmail.com", true);
         String json = this.objectMapper.writeValueAsString(userDto);
 
         // when and then

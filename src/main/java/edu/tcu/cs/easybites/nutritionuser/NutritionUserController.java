@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/nutrition-user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class NutritionUserController {
 
     private final NutritionUserService nutritionUserService;
@@ -46,6 +47,7 @@ public class NutritionUserController {
 
     @PostMapping
     public Result addNutritionUser(@Valid @RequestBody NutritionUser newNutritionUser) {
+        newNutritionUser.setEnabled(true);
         NutritionUser savedUser = this.nutritionUserService.save(newNutritionUser);
         NutritionUserDto savedUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(savedUser);
         return new Result(true, StatusCode.SUCCESS, "Add user successful", savedUserDto);
@@ -57,5 +59,11 @@ public class NutritionUserController {
         NutritionUser updatedNutritionUser = this.nutritionUserService.update(nutritionUserId, update);
         NutritionUserDto updatedNutritionUserDto = this.nutritionUserToNutritionUserDtoConverter.convert(updatedNutritionUser);
         return new Result(true, StatusCode.SUCCESS, "Nutrition user edited successfully", updatedNutritionUserDto);
+    }
+
+    @PutMapping("/{newStatus}/{nutritionUserId}")
+    public Result updateAccountStatus(@PathVariable String newStatus, @PathVariable Integer nutritionUserId) {
+        this.nutritionUserService.changeAccountStatus(newStatus, nutritionUserId);
+        return new Result(true, StatusCode.SUCCESS, "Nutrition user status updated successfully.");
     }
 }
