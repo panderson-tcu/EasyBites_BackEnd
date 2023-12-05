@@ -1,7 +1,7 @@
 # This defines which application properties will be active.
 spring:
   profiles:
-    active: dev # dev or prod
+    active: prod # dev or prod
   mvc:
     throw-exception-if-no-handler-found: true
   web:
