@@ -14,9 +14,11 @@ import edu.tcu.cs.easybites.protein.ProteinRepository;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.RecipeRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("dev")
 public class DBDataInitializer implements CommandLineRunner {
     private final RecipeRepository recipeRepository;
     private final AllergenRepository allergenRepository;

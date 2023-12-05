@@ -1,11 +1,15 @@
+# This defines which application properties will be active.
 spring:
-  datasource:
-    url: jdbc:h2:mem:easybites
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  profiles:
+    active: prod # dev or prod
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
 api:
   endpoint:
     base-url:
 server:
   port: 80
+
