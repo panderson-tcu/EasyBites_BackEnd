@@ -1,8 +1,4 @@
 spring:
-  profiles:
-    config:
-      activate:
-        on-profile: prod
   datasource:
     url: jdbc-secretsmanager:postgresql://easybites-db-instance.cdm8aruzrwwy.us-east-2.rds.amazonaws.com/easybites
     driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
