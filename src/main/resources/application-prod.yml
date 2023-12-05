@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://easybites-db-instance.cdm8aruzrwwy.us-east-2.rds.amazonaws.com/easybites
+    username : postgres
+    password: EU(^ViP38
+  jpa:
+    hibernate:
+      ddl-auto: none # Turn off the DDL auto generation. We prevent spring boot from modifying DB schema

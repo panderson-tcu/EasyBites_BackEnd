@@ -30,6 +30,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -48,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayName("Integration tests for Recipe API endpoints")
 @Tag("integration")
+@ActiveProfiles(value = "dev") // uses the specified profile to run this class
 public class RecipeControllerIntegrationTest {
 
     @Autowired
@@ -83,7 +85,6 @@ public class RecipeControllerIntegrationTest {
                 .andExpect(jsonPath("$.code").value(StatusCode.SUCCESS))
                 .andExpect(jsonPath("$.message").value("View all recipes successful"))
                 .andExpect(jsonPath("$.data", Matchers.hasSize(3)));
-
     }
 
     @Test
