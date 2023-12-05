@@ -82,15 +82,15 @@ public class DBDataInitializer implements CommandLineRunner {
         none.setName("None");
         none.setAllergenId(2008);
 
-//        allergenRepository.save(milk);
-//        allergenRepository.save(eggs);
-//        allergenRepository.save(peanuts);
-//        allergenRepository.save(treeNuts);
-//        allergenRepository.save(soy);
-//        allergenRepository.save(wheat);
-//        allergenRepository.save(shellfish);
-//        allergenRepository.save(fish);
-//        allergenRepository.save(none);
+        allergenRepository.save(milk);
+        allergenRepository.save(eggs);
+        allergenRepository.save(peanuts);
+        allergenRepository.save(treeNuts);
+        allergenRepository.save(soy);
+        allergenRepository.save(wheat);
+        allergenRepository.save(shellfish);
+        allergenRepository.save(fish);
+        allergenRepository.save(none);
 
         // Create Protein
         Protein chicken = new Protein();
@@ -117,12 +117,12 @@ public class DBDataInitializer implements CommandLineRunner {
         noneProtein.setProteinName("None");
         noneProtein.setProteinId(1005);
 
-//        proteinRepository.save(chicken);
-//        proteinRepository.save(beef);
-//        proteinRepository.save(pork);
-//        proteinRepository.save(tofu);
-//        proteinRepository.save(seafood);
-//        proteinRepository.save(noneProtein);
+        proteinRepository.save(chicken);
+        proteinRepository.save(beef);
+        proteinRepository.save(pork);
+        proteinRepository.save(tofu);
+        proteinRepository.save(seafood);
+        proteinRepository.save(noneProtein);
 
 
         // Create NutritionUser
@@ -173,18 +173,18 @@ public class DBDataInitializer implements CommandLineRunner {
         nutritionUser5.setEnabled(true);
 
 
-//        this.nutritionUserService.save(nutritionUser);
-//        this.nutritionUserService.save(nutritionUser2);
-//        this.nutritionUserService.save(nutritionUser3);
-//        this.nutritionUserService.save(nutritionUser4);
-//        this.nutritionUserService.save(nutritionUser5);
-//
-//
-//        this.nutritionUserRepository.save(nutritionUser);
-//        this.nutritionUserRepository.save(nutritionUser2);
-//        this.nutritionUserRepository.save(nutritionUser3);
-//        this.nutritionUserRepository.save(nutritionUser4);
-//        this.nutritionUserRepository.save(nutritionUser5);
+        this.nutritionUserService.save(nutritionUser);
+        this.nutritionUserService.save(nutritionUser2);
+        this.nutritionUserService.save(nutritionUser3);
+        this.nutritionUserService.save(nutritionUser4);
+        this.nutritionUserService.save(nutritionUser5);
+
+
+        this.nutritionUserRepository.save(nutritionUser);
+        this.nutritionUserRepository.save(nutritionUser2);
+        this.nutritionUserRepository.save(nutritionUser3);
+        this.nutritionUserRepository.save(nutritionUser4);
+        this.nutritionUserRepository.save(nutritionUser5);
 
         // Create Ingredient
         Ingredient i1 = new Ingredient();
@@ -194,9 +194,9 @@ public class DBDataInitializer implements CommandLineRunner {
         Ingredient i3 = new Ingredient();
         i3.setUpcValue("5002");
 
-//        ingredientRepository.save(i1);
-//        ingredientRepository.save(i2);
-//        ingredientRepository.save(i3);
+        ingredientRepository.save(i1);
+        ingredientRepository.save(i2);
+        ingredientRepository.save(i3);
 
         // Create Appliance
         Appliance airFryer = new Appliance();
@@ -230,15 +230,15 @@ public class DBDataInitializer implements CommandLineRunner {
         Appliance noneAppliance = new Appliance();
         noneAppliance.setName("None");
         noneAppliance.setApplianceId(3007);
-//
-//        applianceRepository.save(airFryer);
-//        applianceRepository.save(crockpot);
-//        applianceRepository.save(stove);
-//        applianceRepository.save(oven);
-//        applianceRepository.save(microwave);
-//        applianceRepository.save(blender);
-//        applianceRepository.save(instantPot);
-//        applianceRepository.save(noneAppliance);
+
+        applianceRepository.save(airFryer);
+        applianceRepository.save(crockpot);
+        applianceRepository.save(stove);
+        applianceRepository.save(oven);
+        applianceRepository.save(microwave);
+        applianceRepository.save(blender);
+        applianceRepository.save(instantPot);
+        applianceRepository.save(noneAppliance);
 
         // Create Recipe 1
         Recipe recipe1 = new Recipe();
@@ -288,8 +288,8 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe3.setServings(3);
         recipe3.setRecipeOwner(nutritionUser2);
 
-//        this.recipeRepository.save(recipe1);
-//        this.recipeRepository.save(recipe2);
-//        this.recipeRepository.save(recipe3);
+        this.recipeRepository.save(recipe1);
+        this.recipeRepository.save(recipe2);
+        this.recipeRepository.save(recipe3);
     }
 }
