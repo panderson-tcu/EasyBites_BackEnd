@@ -1,8 +1,14 @@
 spring:
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          property-sources[0]:
+            endpoint: https://easybites-key-vault.vault.azure.net/ # environment varialbe
   datasource:
-    url: jdbc-secretsmanager:postgresql://easybites-db-instance.cdm8aruzrwwy.us-east-2.rds.amazonaws.com/easybites
-    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
-    username : /easybites/db/credentials
+    url: ${datasource-url} # secret from azure key vault
+    username : ${datasource-username} # secret from azure key vault
+    password: ${datasource-password} # secret from azure key vault
   jpa:
     hibernate:
       ddl-auto: none # Turn off the DDL auto generation. We prevent spring boot from modifying DB schema
