@@ -24,10 +24,12 @@ public class Recipe implements Serializable {
 
     private Integer cookTime;
 
+    @Column(columnDefinition = "TEXT")
     private String ingredientsQuantity;
 
     private Double estimatedCost;
 
+    @Column(columnDefinition = "TEXT")
     private String instructions;
 
     @NotNull
