@@ -49,6 +49,15 @@ public class RecipeService {
     }
 
     public Recipe update(Integer recipeId, Recipe update) {
+        List<Ingredient> ingredients = update.getIngredients();
+        for (Ingredient ingredientToAdd : ingredients) {
+            Optional<Ingredient> existingIngredient = ingredientRepository.findById(ingredientToAdd.getUpcValue());
+            if(existingIngredient.isEmpty()) {
+                Ingredient newIngredient = new Ingredient();
+                newIngredient.setUpcValue(ingredientToAdd.getUpcValue());
+                ingredientRepository.save(newIngredient);
+            }
+        }
         return this.recipeRepository.findById(recipeId)
                 .map(oldRecipe -> {
                     oldRecipe.setTitle(update.getTitle());
@@ -59,7 +68,7 @@ public class RecipeService {
                     oldRecipe.setServings(update.getServings());
                     oldRecipe.setStatus("pending");
                     oldRecipe.setProtein(update.getProtein());
-                    oldRecipe.setIngredients(update.getIngredients());
+                    oldRecipe.setIngredients(ingredients);
                     oldRecipe.setAppliances(update.getAppliances());
                     oldRecipe.setAllergens(update.getAllergens());
                     oldRecipe.setAppUsers(update.getAppUsers());
