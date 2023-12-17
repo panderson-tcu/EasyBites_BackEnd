@@ -32,6 +32,8 @@ public class RecipeService {
     public Recipe save(Recipe newRecipe) {
         // save ingredient to ingredient table if not exist
         List<Ingredient> ingredients = newRecipe.getIngredients();
+        ingredients.removeIf(ingredient -> ingredient.getUpcValue() == null || ingredient.getUpcValue().isEmpty());
+
         for (Ingredient ingredientToAdd : ingredients) {
             Optional<Ingredient> existingIngredient = ingredientRepository.findById(ingredientToAdd.getUpcValue());
 
@@ -50,6 +52,8 @@ public class RecipeService {
 
     public Recipe update(Integer recipeId, Recipe update) {
         List<Ingredient> ingredients = update.getIngredients();
+        ingredients.removeIf(ingredient -> ingredient.getUpcValue() == null || ingredient.getUpcValue().isEmpty());
+
         for (Ingredient ingredientToAdd : ingredients) {
             Optional<Ingredient> existingIngredient = ingredientRepository.findById(ingredientToAdd.getUpcValue());
             if(existingIngredient.isEmpty()) {
