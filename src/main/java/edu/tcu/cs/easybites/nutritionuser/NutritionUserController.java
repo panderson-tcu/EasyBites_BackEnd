@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/nutrition-user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://easy-bites-tcu.vercel.app")
 public class NutritionUserController {
 
     private final NutritionUserService nutritionUserService;
