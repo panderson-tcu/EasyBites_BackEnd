@@ -2,18 +2,23 @@ package edu.tcu.cs.easybites.nutritionuser.converter;
 
 import edu.tcu.cs.easybites.nutritionuser.NutritionUser;
 import edu.tcu.cs.easybites.nutritionuser.dto.NutritionUserDto;
-//import edu.tcu.cs.easybites.recipe.converter.RecipeDtoToRecipeConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class converts a NutritionUser DTO (Data Transfer Object) to a NutritionUser object.
+ */
 @Component
 public class NutritionUserDtoToNutritionUserConverter implements Converter<NutritionUserDto, NutritionUser> {
-//    private final RecipeDtoToRecipeConverter recipeDtoToRecipeConverter;
-//
-//    public NutritionUserDtoToNutritionUserConverter(RecipeDtoToRecipeConverter recipeDtoToRecipeConverter) {
-//        this.recipeDtoToRecipeConverter = recipeDtoToRecipeConverter;
-//    }
 
+    /**
+     * Convert method:
+     * We will take in a source and set the fields of a new instance of a NutritionUser
+     * to the corresponding key of the DTO object.
+     *
+     * @param source - DTO of a NutritionUser. This will be sent as a JSON format
+     * @return nutritionUser - a NutritionObject instance
+     */
     @Override
     public NutritionUser convert(NutritionUserDto source) {
         NutritionUser nutritionUser = new NutritionUser();
@@ -22,7 +27,6 @@ public class NutritionUserDtoToNutritionUserConverter implements Converter<Nutri
         nutritionUser.setLastName(source.lastName());
         nutritionUser.setAdminLevel(source.adminLevel());
         nutritionUser.setEmail(source.email());
-//        nutritionUser.setRecipes(source.recipes() != null ? this.recipeDtoToRecipeConverter.convertList(source.recipes()) : null );
         return nutritionUser;
     }
 }

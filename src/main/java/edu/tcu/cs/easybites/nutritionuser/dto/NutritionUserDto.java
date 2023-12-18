@@ -1,9 +1,6 @@
 package edu.tcu.cs.easybites.nutritionuser.dto;
 
-import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import jakarta.validation.constraints.NotEmpty;
-
-import java.util.List;
 
 public record NutritionUserDto(Integer nutritionUserId,
                                @NotEmpty(message = "first name is required.")
