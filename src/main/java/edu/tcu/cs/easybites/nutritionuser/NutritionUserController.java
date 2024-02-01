@@ -17,8 +17,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("${api.endpoint.base-url}/nutrition-user") // base-url is specified in application.yml file
-//@CrossOrigin(origins = "https://easy-bites-tcu.vercel.app") /* PROD ONLY: this is the URL for the EasyBites front end server. Here we allow CORS.*/
-@CrossOrigin(origins = "http://localhost:3000") // FOR DEV ONLY
+@CrossOrigin(origins = "https://easy-bites-tcu.vercel.app") /* PROD ONLY: this is the URL for the EasyBites front end server. Here we allow CORS.*/
+//@CrossOrigin(origins = "http://localhost:3000") // FOR DEV ONLY
 public class NutritionUserController {
     private final NutritionUserService nutritionUserService;
 
