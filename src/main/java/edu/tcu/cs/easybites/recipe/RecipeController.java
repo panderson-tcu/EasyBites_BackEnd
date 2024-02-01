@@ -12,7 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/recipes")
-@CrossOrigin(origins = "https://easy-bites-tcu.vercel.app")
+@CrossOrigin(origins = "https://easy-bites-tcu.vercel.app") // PROD ONLY: this is the URL for the EasyBites front end server. Here we allow CORS.**/
+//@CrossOrigin(origins = "http://localhost:3000") // FOR DEV ONLY
 public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeToRecipeDtoConverter recipeToRecipeDtoConverter;

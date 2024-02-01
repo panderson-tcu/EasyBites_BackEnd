@@ -113,6 +113,10 @@ public class DBDataInitializer implements CommandLineRunner {
         seafood.setProteinName("Seafood");
         seafood.setProteinId(1004);
 
+        Protein turkey = new Protein();
+        turkey.setProteinName("Turkey");
+        turkey.setProteinId(1006);
+
         Protein noneProtein = new Protein();
         noneProtein.setProteinName("None");
         noneProtein.setProteinId(1005);
@@ -122,6 +126,7 @@ public class DBDataInitializer implements CommandLineRunner {
         proteinRepository.save(pork);
         proteinRepository.save(tofu);
         proteinRepository.save(seafood);
+        proteinRepository.save(turkey);
         proteinRepository.save(noneProtein);
 
 
