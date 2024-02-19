@@ -118,6 +118,7 @@ public class RecipeControllerIntegrationTest {
         RecipeDto recipeDto = new RecipeDto(null,
                 "Recipe 1",
                 5,
+                "https://easybitesblobstorage.blob.core.windows.net/recipephotos/1-tofu-pad-thai.png",
                 "1 cup of cheese...",
                 5.50,
                 "Preheat oven...",

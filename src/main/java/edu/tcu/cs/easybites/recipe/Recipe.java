@@ -23,7 +23,7 @@ public class Recipe implements Serializable {
     private String title;
 
     private Integer cookTime;
-
+    private String imageUrl;
     @Column(columnDefinition = "TEXT")
     private String ingredientsQuantity;
 
@@ -100,6 +100,14 @@ public class Recipe implements Serializable {
 
     public void setCookTime(Integer cookTime) {
         this.cookTime = cookTime;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getIngredientsQuantity() {

@@ -47,6 +47,7 @@ public class RecipeToRecipeDtoConverter implements Converter<Recipe, RecipeDto> 
         RecipeDto recipeDto = new RecipeDto(source.getRecipeId(),
                                             source.getTitle(),
                                             source.getCookTime(),
+                                            source.getImageUrl(),
                                             source.getIngredientsQuantity(),
                                             source.getEstimatedCost(),
                                             source.getInstructions(),
