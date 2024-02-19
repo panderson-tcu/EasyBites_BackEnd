@@ -18,10 +18,11 @@ public record RecipeDto(Integer recipeId,
                         @NotNull(message = "cooktime is required.")
                         @Positive(message = "cooktime must be positive number")
                         Integer cooktime,
+                        String imageUrl,
                         @NotEmpty(message = "ingredient quantity is required.")
                         String ingredientsQuantity,
                         @NotNull(message = "cost is required.")
-                        @Positive(message = "cosst must be positive number")
+                        @Positive(message = "cost must be positive number")
                         Double estimatedCost,
                         @NotEmpty(message = "instructions are required.")
                         String instructions,

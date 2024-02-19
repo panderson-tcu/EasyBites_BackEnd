@@ -250,6 +250,7 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe1.setTitle("Enchilada Casserole");
         recipe1.setCookTime(10);
         recipe1.setIngredientsQuantity("5 oz Red Enchilada Sauce\n8 oz Ground Turkey\n");
+        recipe1.setImageUrl("https://easybitesblobstorage.blob.core.windows.net/recipephotos/1-tofu-pad-thai.png");
         recipe1.setEstimatedCost(5.50);
         recipe1.setInstructions("Heat oven to 400F.\nIn a pan over medium high heat...");
         recipe1.setServings(2);
