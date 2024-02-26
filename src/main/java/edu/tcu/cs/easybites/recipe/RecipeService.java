@@ -29,6 +29,10 @@ public class RecipeService {
         return this.recipeRepository.findAll();
     }
 
+    public List<Recipe> findApprovedRecipes() {
+        return this.recipeRepository.findAllByStatus("approved");
+    }
+
     public Recipe save(Recipe newRecipe) {
         // save ingredient to ingredient table if not exist
         List<Ingredient> ingredients = newRecipe.getIngredients();

@@ -268,6 +268,7 @@ public class DBDataInitializer implements CommandLineRunner {
         Recipe recipe2 = new Recipe();
         recipe2.setTitle("Vegetarian Pasta");
         recipe2.setCookTime(15);
+        recipe2.setImageUrl("https://easybitesblobstorage.blob.core.windows.net/recipephotos/207-taco-bowl.png");
         recipe2.setIngredientsQuantity("8 oz Pasta\n1 cup Cherry Tomatoes\n");
         recipe2.setEstimatedCost(3.50);
         recipe2.setInstructions("Boil pasta according to package instructions.\nCut cherry tomatoes in half...");
@@ -278,12 +279,15 @@ public class DBDataInitializer implements CommandLineRunner {
         recipe2.addIngredient(i1);
         recipe2.addIngredient(i2);
         recipe2.setRecipeOwner(nutritionUser3);
+        recipe2.addAllergen(milk);
+        recipe2.addAllergen(peanuts);
 
         // Set different Protein, NutritionUser, Ingredients, and Appliances as needed for Recipe 2
 
         // Create Recipe 3
         Recipe recipe3 = new Recipe();
         recipe3.setTitle("Grilled Salmon");
+        recipe3.setImageUrl("https://easybitesblobstorage.blob.core.windows.net/recipephotos/207-taco-bowl.png");
         recipe3.setCookTime(12);
         recipe3.setIngredientsQuantity("1 lb Salmon fillets\n1 lemon\n");
         recipe3.setEstimatedCost(8.00);

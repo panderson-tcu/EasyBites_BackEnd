@@ -1,7 +1,9 @@
 package edu.tcu.cs.easybites.recipe;
 
 import edu.tcu.cs.easybites.recipe.converter.RecipeDtoToRecipeConverter;
+import edu.tcu.cs.easybites.recipe.converter.RecipeToApprovedRecipeDtoConverter;
 import edu.tcu.cs.easybites.recipe.converter.RecipeToRecipeDtoConverter;
+import edu.tcu.cs.easybites.recipe.dto.ApprovedRecipeDto;
 import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
@@ -18,11 +20,13 @@ public class RecipeController {
     private final RecipeService recipeService;
     private final RecipeToRecipeDtoConverter recipeToRecipeDtoConverter;
     private final RecipeDtoToRecipeConverter recipeDtoToRecipeConverter;
+    private final RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter;
 
-    public RecipeController(RecipeService recipeService, RecipeToRecipeDtoConverter recipeToRecipeDtoConverter, RecipeDtoToRecipeConverter recipeDtoToRecipeConverter) {
+    public RecipeController(RecipeService recipeService, RecipeToRecipeDtoConverter recipeToRecipeDtoConverter, RecipeDtoToRecipeConverter recipeDtoToRecipeConverter, RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter) {
         this.recipeService = recipeService;
         this.recipeToRecipeDtoConverter = recipeToRecipeDtoConverter;
         this.recipeDtoToRecipeConverter = recipeDtoToRecipeConverter;
+        this.recipeToApprovedRecipeDtoConverter = recipeToApprovedRecipeDtoConverter;
     }
 
     @GetMapping("/{recipeId}")
@@ -37,6 +41,13 @@ public class RecipeController {
         List<Recipe> foundRecipes = this.recipeService.findAll();
         List<RecipeDto> recipeDtos = recipeToRecipeDtoConverter.convertList(foundRecipes);
         return new Result(true, StatusCode.SUCCESS, "View all recipes successful", recipeDtos);
+    }
+
+    @GetMapping("/approved")
+    public Result findApprovedRecipes() {
+        List<Recipe> foundRecipes = this.recipeService.findApprovedRecipes();
+        List<ApprovedRecipeDto> approvedRecipeDtos = recipeToApprovedRecipeDtoConverter.convertList(foundRecipes);
+        return new Result(true, StatusCode.SUCCESS, "View Approved recipes successful", approvedRecipeDtos);
     }
 
     @PostMapping
