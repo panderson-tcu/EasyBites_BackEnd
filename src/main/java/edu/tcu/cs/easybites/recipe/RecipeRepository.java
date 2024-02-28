@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface RecipeRepository extends JpaRepository<Recipe, Integer> {
 //    List<Recipe> findAllByRecipeOwner_NutritionUserId(Integer nutritionOwnerId);
     List<Recipe> findAllByRecipeOwner_NutritionUserId(Integer nutritionUserId);
+    List<Recipe> findAllByStatus(String status);
 }
