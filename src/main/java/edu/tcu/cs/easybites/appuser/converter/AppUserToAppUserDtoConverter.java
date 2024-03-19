@@ -14,7 +14,12 @@ import java.util.stream.Collectors;
 public class AppUserToAppUserDtoConverter implements Converter<AppUser, AppUserDto> {
     @Override
     public AppUserDto convert(AppUser source) {
-        return null;
+        AppUserDto appUserDto = new AppUserDto(source.getUserId(),
+                                               source.getEmail(),
+                                               source.getFirstName(),
+                                               source.getLastName()
+        );
+        return appUserDto;
     }
 
     public List<AppUserDto> convertList(List<AppUser> appUsers) {
