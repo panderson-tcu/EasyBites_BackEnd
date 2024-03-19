@@ -12,11 +12,11 @@ import java.util.List;
 @Entity
 public class AppUser implements Serializable {
     @Id //add generated value annotation to generate ID?
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
     private String email;
-    private Integer age;
-    private String classification;
-    private String address;
+    private String firstName;
+    private String lastName;
 
     @ManyToMany
     @JoinTable(
@@ -62,30 +62,21 @@ public class AppUser implements Serializable {
         this.email = email;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getClassification() {
-        return classification;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setClassification(String classification) {
-        this.classification = classification;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
 
     public List<Appliance> getAppliances() {
         return appliances;
