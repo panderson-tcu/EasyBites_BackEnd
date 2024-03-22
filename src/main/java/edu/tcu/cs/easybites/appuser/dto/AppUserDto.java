@@ -1,6 +1,6 @@
 package edu.tcu.cs.easybites.appuser.dto;
 
-public record AppUserDto(String userId,
+public record AppUserDto(Integer userId,
                          String email,
                          String firstName,
                          String lastName) {
