@@ -1,5 +1,7 @@
 package edu.tcu.cs.easybites.recipe;
 
+import edu.tcu.cs.easybites.appuser.AppUser;
+import edu.tcu.cs.easybites.appuser.AppUserRepository;
 import edu.tcu.cs.easybites.ingredient.Ingredient;
 import edu.tcu.cs.easybites.ingredient.IngredientRepository;
 import edu.tcu.cs.easybites.system.exception.ObjectNotFoundException;
@@ -15,9 +17,14 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository) {
+    private final AppUserRepository appUserRepository;
+
+    public RecipeService(RecipeRepository recipeRepository,
+                         IngredientRepository ingredientRepository,
+                         AppUserRepository appUserRepository) {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     public Recipe findById(Integer recipeId) {
@@ -97,5 +104,29 @@ public class RecipeService {
 
     public List<Recipe> findRecipesByUserId(Integer nutritionUserId) {
         return this.recipeRepository.findAllByRecipeOwner_NutritionUserId(nutritionUserId);
+    }
+
+    public Recipe addAppUser(Integer recipeId, String userId) {
+        Optional<Recipe> foundRecipeOptional = recipeRepository.findById(recipeId);
+        Optional<AppUser> newAppUserOptional = appUserRepository.findByUserId(userId);
+
+        if (newAppUserOptional.isPresent() && foundRecipeOptional.isPresent()) {
+            AppUser newAppUser = newAppUserOptional.get();
+            Recipe foundRecipe = foundRecipeOptional.get();
+
+            List<AppUser> oldAppUsers = foundRecipe.getAppUsers();
+            List<Recipe> userRecipes = newAppUser.getRecipes();
+
+            oldAppUsers.add(newAppUser);
+            userRecipes.add(foundRecipe);
+
+            foundRecipe.setAppUsers(oldAppUsers);
+            newAppUser.setRecipes(userRecipes);
+
+            return this.recipeRepository.save(foundRecipe);
+        }
+        else {
+            throw new ObjectNotFoundException("user", userId);
+        }
     }
 }

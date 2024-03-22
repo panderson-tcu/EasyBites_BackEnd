@@ -1,5 +1,7 @@
 package edu.tcu.cs.easybites.recipe;
 
+import edu.tcu.cs.easybites.appuser.AppUser;
+import edu.tcu.cs.easybites.appuser.dto.AppUserDto;
 import edu.tcu.cs.easybites.recipe.converter.RecipeDtoToRecipeConverter;
 import edu.tcu.cs.easybites.recipe.converter.RecipeToApprovedRecipeDtoConverter;
 import edu.tcu.cs.easybites.recipe.converter.RecipeToRecipeDtoConverter;
@@ -11,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${api.endpoint.base-url}/recipes")
@@ -78,6 +81,14 @@ public class RecipeController {
         List<Recipe> foundRecipes = recipeService.findRecipesByUserId(nutritionUserId);
         List<RecipeDto> recipeDtos = this.recipeToRecipeDtoConverter.convertList(foundRecipes);
         return new Result(true, StatusCode.SUCCESS, "Find recipe by user id successful.", recipeDtos);
+    }
+
+    @PatchMapping("/{recipeId}/{userId}")
+    public Result addAppUsers(@PathVariable Integer recipeId, @PathVariable String userId) {
+        Recipe updatedRecipe = this.recipeService.addAppUser(recipeId, userId);
+        RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
+
+        return new Result(true, StatusCode.SUCCESS, "Add app user success", updatedRecipeDto);
     }
 
 }
