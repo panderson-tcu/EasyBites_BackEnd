@@ -75,6 +75,9 @@ public class Recipe implements Serializable {
     @ManyToMany(mappedBy="recipes")
     private List<AppUser> appUsers = new ArrayList<>();
 
+    @ManyToMany(mappedBy="shoppingCart")
+    private List<AppUser> shoppingCart = new ArrayList<>();
+
     public Recipe() {
     }
 
@@ -197,6 +200,14 @@ public class Recipe implements Serializable {
 
     public void setAppUsers(List<AppUser> appUsers) {
         this.appUsers = appUsers;
+    }
+
+    public List<AppUser> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(List<AppUser> shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     public void addIngredient(Ingredient ingredient) {
