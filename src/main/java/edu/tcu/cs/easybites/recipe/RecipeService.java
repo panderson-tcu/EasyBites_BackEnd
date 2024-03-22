@@ -106,7 +106,7 @@ public class RecipeService {
         return this.recipeRepository.findAllByRecipeOwner_NutritionUserId(nutritionUserId);
     }
 
-    public Recipe addAppUser(Integer recipeId, String userId) {
+    public Recipe likeRecipe(Integer recipeId, String userId) {
         Optional<Recipe> foundRecipeOptional = recipeRepository.findById(recipeId);
         Optional<AppUser> newAppUserOptional = appUserRepository.findByUserId(userId);
 
@@ -128,5 +128,59 @@ public class RecipeService {
         else {
             throw new ObjectNotFoundException("user", userId);
         }
+    }
+
+    public Recipe removeLikedRecipe(Integer recipeId, String userId) {
+        Recipe foundRecipe = this.findById(recipeId);
+        AppUser foundAppUser = this.appUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("app user", userId));
+
+        List<Recipe> likedRecipes = foundAppUser.getRecipes();
+        List<AppUser> recipeUsers = foundRecipe.getAppUsers();
+
+        likedRecipes.remove(foundRecipe);
+        recipeUsers.remove(foundAppUser);
+
+        this.appUserRepository.save(foundAppUser);
+        return this.recipeRepository.save(foundRecipe);
+    }
+
+    public Recipe addToShoppingCart(Integer recipeId, String userId) {
+        Optional<Recipe> foundRecipeOptional = recipeRepository.findById(recipeId);
+        Optional<AppUser> newAppUserOptional = appUserRepository.findByUserId(userId);
+
+        if (newAppUserOptional.isPresent() && foundRecipeOptional.isPresent()) {
+            AppUser newAppUser = newAppUserOptional.get();
+            Recipe foundRecipe = foundRecipeOptional.get();
+
+            List<AppUser> oldAppUsers = foundRecipe.getShoppingCart();
+            List<Recipe> userShoppingCart = newAppUser.getShoppingCart();
+
+            oldAppUsers.add(newAppUser);
+            userShoppingCart.add(foundRecipe);
+
+            foundRecipe.setShoppingCart(oldAppUsers);
+            newAppUser.setShoppingCart(userShoppingCart);
+
+            return this.recipeRepository.save(foundRecipe);
+        }
+        else {
+            throw new ObjectNotFoundException("user", userId);
+        }
+    }
+
+    public Recipe removeShoppingCart(Integer recipeId, String userId) {
+        Recipe foundRecipe = this.findById(recipeId);
+        AppUser foundAppUser = this.appUserRepository.findByUserId(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("app user", userId));
+
+        List<Recipe> likedRecipes = foundAppUser.getShoppingCart();
+        List<AppUser> recipeUsers = foundRecipe.getShoppingCart();
+
+        likedRecipes.remove(foundRecipe);
+        recipeUsers.remove(foundAppUser);
+
+        this.appUserRepository.save(foundAppUser);
+        return this.recipeRepository.save(foundRecipe);
     }
 }

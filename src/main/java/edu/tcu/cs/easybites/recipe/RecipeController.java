@@ -83,12 +83,40 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Find recipe by user id successful.", recipeDtos);
     }
 
-    @PatchMapping("/{recipeId}/{userId}")
-    public Result addAppUsers(@PathVariable Integer recipeId, @PathVariable String userId) {
-        Recipe updatedRecipe = this.recipeService.addAppUser(recipeId, userId);
+    //like a recipe
+    @PatchMapping("like/{recipeId}/{userId}")
+    public Result likeRecipe(@PathVariable Integer recipeId, @PathVariable String userId) {
+        Recipe updatedRecipe = this.recipeService.likeRecipe(recipeId, userId);
+        RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
+
+        return new Result(true, StatusCode.SUCCESS, "Add liked recipe success", updatedRecipeDto);
+    }
+
+    // remove liked recipe
+    @PatchMapping("removeLike/{recipeId}/{userId}")
+    public Result removeLike(@PathVariable Integer recipeId, @PathVariable String userId) {
+        Recipe updatedRecipe = this.recipeService.removeLikedRecipe(recipeId, userId);
+        RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
+
+        return new Result(true, StatusCode.SUCCESS, "remove liked recipe success", updatedRecipeDto);
+    }
+
+    // add recipe to shopping cart
+    @PatchMapping("shoppingCart/{recipeId}/{userId}")
+    public Result addToShoppingCart(@PathVariable Integer recipeId, @PathVariable String userId) {
+        Recipe updatedRecipe = this.recipeService.addToShoppingCart(recipeId, userId);
         RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
 
         return new Result(true, StatusCode.SUCCESS, "Add app user success", updatedRecipeDto);
+    }
+
+    // remove recipe from shopping cart
+    @PatchMapping("removeShoppingCart/{recipeId}/{userId}")
+    public Result removeShoppingCart(@PathVariable Integer recipeId, @PathVariable String userId) {
+        Recipe updatedRecipe = this.recipeService.removeShoppingCart(recipeId, userId);
+        RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
+
+        return new Result(true, StatusCode.SUCCESS, "remove recipe from shopping cart success", updatedRecipeDto);
     }
 
 }
