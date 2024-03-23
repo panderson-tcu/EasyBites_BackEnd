@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 public class AppUser implements Serializable {
     @Id //add generated value annotation to generate ID?
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer userId;
     private String email;
     private String firstName;
     private String lastName;
@@ -42,22 +42,15 @@ public class AppUser implements Serializable {
     )
     private List<Recipe> recipes = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name="shopping_cart",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="recipe_id")
-    )
-    private List<Recipe> shoppingCart = new ArrayList<>();
     public AppUser() {
 
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -107,13 +100,5 @@ public class AppUser implements Serializable {
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipes = recipes;
-    }
-
-    public List<Recipe> getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(List<Recipe> shoppingCart) {
-        this.shoppingCart = shoppingCart;
     }
 }

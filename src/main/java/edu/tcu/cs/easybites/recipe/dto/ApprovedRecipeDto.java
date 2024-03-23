@@ -1,7 +1,6 @@
 package edu.tcu.cs.easybites.recipe.dto;
 
 import edu.tcu.cs.easybites.allergen.dto.AllergenDto;
-import edu.tcu.cs.easybites.ingredient.dto.IngredientDto;
 import edu.tcu.cs.easybites.protein.dto.ProteinDto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +20,6 @@ public record ApprovedRecipeDto(Integer recipeId,
                                Double estimatedCost,
                                @NotNull(message = "protein is required.")
                                ProteinDto protein,
-                               List<AllergenDto> allergens,
-                               List<IngredientDto> ingredients
+                               List<AllergenDto> allergens
                                ){
 }

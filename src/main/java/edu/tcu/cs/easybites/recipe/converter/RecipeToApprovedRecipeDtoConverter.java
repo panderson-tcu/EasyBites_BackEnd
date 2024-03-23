@@ -1,7 +1,6 @@
 package edu.tcu.cs.easybites.recipe.converter;
 
 import edu.tcu.cs.easybites.allergen.converter.AllergenToAllergenDtoConverter;
-import edu.tcu.cs.easybites.ingredient.converter.IngredientToIngredientDtoConverter;
 import edu.tcu.cs.easybites.protein.converter.ProteinToProteinDtoConverter;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.dto.ApprovedRecipeDto;
@@ -15,12 +14,10 @@ import java.util.stream.Collectors;
 public class RecipeToApprovedRecipeDtoConverter implements Converter<Recipe, ApprovedRecipeDto> {
     private final ProteinToProteinDtoConverter proteinToProteinDtoConverter;
     private final AllergenToAllergenDtoConverter allergenToAllergenDtoConverter;
-    private final IngredientToIngredientDtoConverter ingredientToIngredientDtoConverter;
     public RecipeToApprovedRecipeDtoConverter(ProteinToProteinDtoConverter proteinToProteinDtoConverter,
-                                              AllergenToAllergenDtoConverter allergenToAllergenDtoConverter, IngredientToIngredientDtoConverter ingredientToIngredientDtoConverter) {
+                                              AllergenToAllergenDtoConverter allergenToAllergenDtoConverter) {
         this.proteinToProteinDtoConverter = proteinToProteinDtoConverter;
         this.allergenToAllergenDtoConverter = allergenToAllergenDtoConverter;
-        this.ingredientToIngredientDtoConverter = ingredientToIngredientDtoConverter;
     }
 
     @Override
@@ -35,10 +32,7 @@ public class RecipeToApprovedRecipeDtoConverter implements Converter<Recipe, App
                     : null,
                 source.getAllergens() != null
                     ? this.allergenToAllergenDtoConverter.convertList(source.getAllergens())
-                    : null,
-                source.getIngredients() != null
-                        ? this.ingredientToIngredientDtoConverter.convertList(source.getIngredients())
-                        : null
+                    : null
         );
         return approvedRecipeDto;
     }
