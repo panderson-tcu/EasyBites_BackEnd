@@ -13,6 +13,7 @@ public class AppUserDtoToAppUserConverter implements Converter<AppUserDto, AppUs
     @Override
     public AppUser convert(AppUserDto source) {
         AppUser appUser = new AppUser();
+        appUser.setUserId(source.userId());
         appUser.setEmail(source.email());
         appUser.setFirstName(source.firstName());
         appUser.setLastName(source.lastName());
