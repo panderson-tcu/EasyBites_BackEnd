@@ -22,6 +22,7 @@ public record ApprovedRecipeDto(Integer recipeId,
                                @NotNull(message = "protein is required.")
                                ProteinDto protein,
                                List<AllergenDto> allergens,
-                               List<IngredientDto> ingredients
+                               List<IngredientDto> ingredients,
+                               Integer servings
                                ){
 }

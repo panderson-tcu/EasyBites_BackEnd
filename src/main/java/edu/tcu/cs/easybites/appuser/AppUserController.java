@@ -59,4 +59,11 @@ public class AppUserController {
         List<ApprovedRecipeDto> likedRecipeDtos = this.recipeToApprovedRecipeDtoConverter.convertList(likedRecipes);
         return new Result(true, StatusCode.SUCCESS, "Find liked recipes by id successful", likedRecipeDtos);
     }
+
+    @GetMapping("/shoppingCart/{appUserId}")
+    public Result findShoppingCartRecipes(@PathVariable String appUserId) {
+        List<Recipe> shoppingCartRecipes = this.appUserService.findShoppingCartRecipes(appUserId);
+        List<ApprovedRecipeDto> shoppingCartRecipesDtos = this.recipeToApprovedRecipeDtoConverter.convertList(shoppingCartRecipes);
+        return new Result(true, StatusCode.SUCCESS, "Find liked recipes by id successful", shoppingCartRecipesDtos);
+    }
 }

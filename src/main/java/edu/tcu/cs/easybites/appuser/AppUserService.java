@@ -33,4 +33,9 @@ public class AppUserService {
         AppUser foundAppUser = this.findById(appUserId);
         return foundAppUser.getRecipes();
     }
+
+    public List<Recipe> findShoppingCartRecipes(String appUserId) {
+        AppUser foundAppUser = this.findById(appUserId);
+        return foundAppUser.getShoppingCart();
+    }
 }
