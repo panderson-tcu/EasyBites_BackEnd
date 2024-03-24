@@ -32,6 +32,11 @@ public class RecipeController {
         this.recipeToApprovedRecipeDtoConverter = recipeToApprovedRecipeDtoConverter;
     }
 
+    /**
+     * Find Recipe by ID endpoint
+     * @param recipeId : id of recipe to find
+     * @return Result
+     */
     @GetMapping("/{recipeId}")
     public Result findRecipeById(@PathVariable Integer recipeId) {
         Recipe foundRecipe = this.recipeService.findById(recipeId);
@@ -39,6 +44,10 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "View recipe by id successful", recipeDto);
     }
 
+    /**
+     * Find all recipes endpoint
+     * @return Result
+     */
     @GetMapping
     public Result findAllRecipes() {
         List<Recipe> foundRecipes = this.recipeService.findAll();
@@ -46,6 +55,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "View all recipes successful", recipeDtos);
     }
 
+    /**
+     * Find recipes with approved status (approved recipe DTO is a shorter version of a recipe)
+     * This method is used in the Mobile App front end to only show App users the recipes that have been approved
+     * in the Web portal.
+     * @return Result
+     */
     @GetMapping("/approved")
     public Result findApprovedRecipes() {
         List<Recipe> foundRecipes = this.recipeService.findApprovedRecipes();
@@ -53,6 +68,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "View Approved recipes successful", approvedRecipeDtos);
     }
 
+    /**
+     * Add Recipe to database endpoint
+     * Recipe is automatically set to "pending" status
+     * @param recipeDto : DTO (RecipeDto json) of the recipe to be added
+     * @return Result
+     */
     @PostMapping
     public Result addRecipe(@Valid @RequestBody RecipeDto recipeDto) {
         Recipe newRecipe = this.recipeDtoToRecipeConverter.convert(recipeDto);
@@ -62,6 +83,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Recipe submitted successfully", savedRecipeDto);
     }
 
+    /**
+     * Update a recipe by ID
+     * @param recipeId : id of recipe to update
+     * @param recipeDto : new json object with the new recipe
+     * @return Result
+     */
     @PutMapping("/{recipeId}")
     public Result updateRecipe(@PathVariable Integer recipeId, @Valid @RequestBody RecipeDto recipeDto) {
         Recipe update = this.recipeDtoToRecipeConverter.convert(recipeDto);
@@ -70,12 +97,24 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Recipe edited successfully", updatedRecipeDto);
     }
 
+    /**
+     * Change Recipe Status endpoint
+     * This endpoint is used by the web portal to approve or deny submitted recipes
+     * @param newStatus : string of new status. must be pending, approved, denied
+     * @param recipeId : id of recipe to be changed
+     * @return Result
+     */
     @PutMapping("/{newStatus}/{recipeId}")
     public Result changeRecipeStatus(@PathVariable String newStatus, @PathVariable Integer recipeId) {
         this.recipeService.changeRecipeStatus(recipeId, newStatus);
         return new Result(true, StatusCode.SUCCESS, "Recipe status changed successfully");
     }
 
+    /**
+     * Get recipes submitted by a specific Nutrition User (Web portal)
+     * @param nutritionUserId : id of nutrition user
+     * @return Result
+     */
     @GetMapping("nutrition-user/{nutritionUserId}")
     public Result findRecipesByUserId(@PathVariable Integer nutritionUserId) {
         List<Recipe> foundRecipes = recipeService.findRecipesByUserId(nutritionUserId);
@@ -83,7 +122,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Find recipe by user id successful.", recipeDtos);
     }
 
-    //like a recipe
+    /**
+     * Add recipe to Liked Recipes (or "Favorite recipes" - user_likes table in DB) - App
+     * @param recipeId : id of recipe
+     * @param userId : id of app user
+     * @return
+     */
     @PatchMapping("like/{recipeId}/{userId}")
     public Result likeRecipe(@PathVariable Integer recipeId, @PathVariable String userId) {
         Recipe updatedRecipe = this.recipeService.likeRecipe(recipeId, userId);
@@ -92,7 +136,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Add liked recipe success", updatedRecipeDto);
     }
 
-    // remove liked recipe
+    /**
+     * Remove a recipe from liked recipes - App
+     * @param recipeId : recipe id
+     * @param userId : app user id
+     * @return Result
+     */
     @PatchMapping("removeLike/{recipeId}/{userId}")
     public Result removeLike(@PathVariable Integer recipeId, @PathVariable String userId) {
         Recipe updatedRecipe = this.recipeService.removeLikedRecipe(recipeId, userId);
@@ -101,7 +150,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "remove liked recipe success", updatedRecipeDto);
     }
 
-    // add recipe to shopping cart
+    /**
+     * Add a recipe to an App user's shopping cart
+     * @param recipeId : recipe id
+     * @param userId : app user id
+     * @return Result
+     */
     @PatchMapping("shoppingCart/{recipeId}/{userId}")
     public Result addToShoppingCart(@PathVariable Integer recipeId, @PathVariable String userId) {
         Recipe updatedRecipe = this.recipeService.addToShoppingCart(recipeId, userId);
@@ -110,7 +164,12 @@ public class RecipeController {
         return new Result(true, StatusCode.SUCCESS, "Add app user success", updatedRecipeDto);
     }
 
-    // remove recipe from shopping cart
+    /**
+     * Remove a recipe from an app user's shopping cart
+     * @param recipeId : recipe id
+     * @param userId : app user id
+     * @return Result
+     */
     @PatchMapping("removeShoppingCart/{recipeId}/{userId}")
     public Result removeShoppingCart(@PathVariable Integer recipeId, @PathVariable String userId) {
         Recipe updatedRecipe = this.recipeService.removeShoppingCart(recipeId, userId);
