@@ -25,7 +25,8 @@ public class RecipeToApprovedRecipeDtoConverter implements Converter<Recipe, App
 
     @Override
     public ApprovedRecipeDto convert(Recipe source) {
-        ApprovedRecipeDto approvedRecipeDto = new ApprovedRecipeDto(source.getRecipeId(),
+        ApprovedRecipeDto approvedRecipeDto = new ApprovedRecipeDto(
+                source.getRecipeId(),
                 source.getTitle(),
                 source.getCookTime(),
                 source.getImageUrl(),
@@ -38,7 +39,8 @@ public class RecipeToApprovedRecipeDtoConverter implements Converter<Recipe, App
                     : null,
                 source.getIngredients() != null
                         ? this.ingredientToIngredientDtoConverter.convertList(source.getIngredients())
-                        : null
+                        : null,
+                source.getServings()
         );
         return approvedRecipeDto;
     }
