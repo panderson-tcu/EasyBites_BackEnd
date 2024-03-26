@@ -1,12 +1,19 @@
 package edu.tcu.cs.easybites.appuser;
 
+import edu.tcu.cs.easybites.allergen.Allergen;
+import edu.tcu.cs.easybites.allergen.converter.AllergenDtoToAllergenConverter;
+import edu.tcu.cs.easybites.allergen.converter.AllergenToAllergenDtoConverter;
+import edu.tcu.cs.easybites.allergen.dto.AllergenDto;
+import edu.tcu.cs.easybites.appliance.Appliance;
+import edu.tcu.cs.easybites.appliance.converter.ApplianceDtoToApplianceConverter;
+import edu.tcu.cs.easybites.appliance.converter.ApplianceToApplianceDtoConverter;
+import edu.tcu.cs.easybites.appliance.dto.ApplianceDto;
 import edu.tcu.cs.easybites.appuser.converter.AppUserDtoToAppUserConverter;
 import edu.tcu.cs.easybites.appuser.converter.AppUserToAppUserDtoConverter;
 import edu.tcu.cs.easybites.appuser.dto.AppUserDto;
 import edu.tcu.cs.easybites.recipe.Recipe;
 import edu.tcu.cs.easybites.recipe.converter.RecipeToApprovedRecipeDtoConverter;
 import edu.tcu.cs.easybites.recipe.dto.ApprovedRecipeDto;
-import edu.tcu.cs.easybites.recipe.dto.RecipeDto;
 import edu.tcu.cs.easybites.system.Result;
 import edu.tcu.cs.easybites.system.StatusCode;
 import jakarta.validation.Valid;
@@ -22,14 +29,26 @@ public class AppUserController {
     private final AppUserDtoToAppUserConverter appUserDtoToAppUserConverter;
     private final AppUserToAppUserDtoConverter appUserToAppUserDtoConverter;
     private final RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter;
-
+    private final AllergenToAllergenDtoConverter allergenToAllergenDtoConverter;
+    private final AllergenDtoToAllergenConverter allergenDtoToAllergenConverter;
+    private final ApplianceToApplianceDtoConverter applianceToApplianceDtoConverter;
+    private final ApplianceDtoToApplianceConverter applianceDtoToApplianceConverter;
     public AppUserController(AppUserService appUserService,
                              AppUserDtoToAppUserConverter appUserDtoToAppUserConverter,
-                             AppUserToAppUserDtoConverter appUserToAppUserDtoConverter, RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter) {
+                             AppUserToAppUserDtoConverter appUserToAppUserDtoConverter,
+                             RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter,
+                             AllergenToAllergenDtoConverter allergenToAllergenDtoConverter,
+                             AllergenDtoToAllergenConverter allergenDtoToAllergenConverter,
+                             ApplianceToApplianceDtoConverter applianceToApplianceDtoConverter,
+                             ApplianceDtoToApplianceConverter applianceDtoToApplianceConverter) {
         this.appUserService = appUserService;
         this.appUserDtoToAppUserConverter = appUserDtoToAppUserConverter;
         this.appUserToAppUserDtoConverter = appUserToAppUserDtoConverter;
         this.recipeToApprovedRecipeDtoConverter = recipeToApprovedRecipeDtoConverter;
+        this.allergenToAllergenDtoConverter = allergenToAllergenDtoConverter;
+        this.allergenDtoToAllergenConverter = allergenDtoToAllergenConverter;
+        this.applianceToApplianceDtoConverter = applianceToApplianceDtoConverter;
+        this.applianceDtoToApplianceConverter = applianceDtoToApplianceConverter;
     }
 
     /**
@@ -92,5 +111,82 @@ public class AppUserController {
         List<Recipe> shoppingCartRecipes = this.appUserService.findShoppingCartRecipes(appUserId);
         List<ApprovedRecipeDto> shoppingCartRecipesDtos = this.recipeToApprovedRecipeDtoConverter.convertList(shoppingCartRecipes);
         return new Result(true, StatusCode.SUCCESS, "Find liked recipes by id successful", shoppingCartRecipesDtos);
+    }
+
+    /**
+     * Get user Allergens by user id
+     * @param appUserId
+     * @return
+     */
+    @GetMapping("/allergens/{appUserId}")
+    public Result getUserAllergens(@PathVariable String appUserId) {
+        AppUser foundAppUser = this.appUserService.findById(appUserId);
+        List<Allergen> userAllergens = foundAppUser.getAllergens();
+        List<AllergenDto> userAllergenDtos = this.allergenToAllergenDtoConverter.convertList(userAllergens);
+        return new Result(true, StatusCode.SUCCESS, "Find user allergens successful", userAllergenDtos);
+    }
+
+    /**
+     * Set user allergens
+     * @param appUserId : app user id
+     * @param allergenDtos : List of allergens to be assigned to a user in the following format:
+     *                     [
+ *                              {
+     *                              "allergenId": 2000
+     *                          },
+     *                          {
+     *                              "allergenId": 2002
+     *                          },
+     *                          {
+ *                                  "allergenId": 2003
+     *                          }
+ *                          ]
+     *
+     * @return Result with newAppUserDto
+     */
+    @PutMapping("/allergens/{appUserId}")
+    public Result setUserAllergens(@PathVariable String appUserId, @RequestBody List<AllergenDto> allergenDtos) {
+        List<Allergen> allergens = this.allergenDtoToAllergenConverter.convertList(allergenDtos);
+        AppUser newAppUser = this.appUserService.setUserAllergens(appUserId, allergens);
+        AppUserDto newAppUserDto = this.appUserToAppUserDtoConverter.convert(newAppUser);
+        return new Result(true, StatusCode.SUCCESS, "Set user allergens successful", newAppUserDto);
+    }
+
+    /**
+     * Set User Appliances
+     * @param appUserId : app user id
+     * @param applianceDtos :  List of appliances to be assigned to a user in the following format:
+     *      *                     [
+     *  *                              {
+     *      *                              "applianceId": 2000
+     *      *                          },
+     *      *                          {
+     *      *                              "applianceId": 2002
+     *      *                          },
+     *      *                          {
+     *  *                                  "applianceId": 2003
+     *      *                          }
+     *  *                          ]
+     * @return
+     */
+    @PutMapping("/allergens/{appUserId}")
+    public Result setUserAppliances(@PathVariable String appUserId, @RequestBody List<ApplianceDto> applianceDtos) {
+        List<Appliance> appliances = this.applianceDtoToApplianceConverter.convertList(applianceDtos);
+        AppUser newAppUser = this.appUserService.setUserAppliances(appUserId, appliances);
+        AppUserDto newAppUserDto = this.appUserToAppUserDtoConverter.convert(newAppUser);
+        return new Result(true, StatusCode.SUCCESS, "Set user appliances successful", newAppUserDto);
+    }
+
+    /**
+     * Get User Appliances
+     * @param appUserId
+     * @return
+     */
+    @GetMapping("/appliances/{appUserId}")
+    public Result getUserAppliances(@PathVariable String appUserId) {
+        AppUser foundAppUser = this.appUserService.findById(appUserId);
+        List<Appliance> userAppliances = foundAppUser.getAppliances();
+        List<ApplianceDto> userApplianceDtos = this.applianceToApplianceDtoConverter.convertList(userAppliances);
+        return new Result(true, StatusCode.SUCCESS, "Find user allergens successful", userApplianceDtos);
     }
 }
