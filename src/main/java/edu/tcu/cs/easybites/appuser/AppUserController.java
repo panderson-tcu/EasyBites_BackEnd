@@ -169,7 +169,7 @@ public class AppUserController {
      *  *                          ]
      * @return
      */
-    @PutMapping("/allergens/{appUserId}")
+    @PutMapping("/appliances/{appUserId}")
     public Result setUserAppliances(@PathVariable String appUserId, @RequestBody List<ApplianceDto> applianceDtos) {
         List<Appliance> appliances = this.applianceDtoToApplianceConverter.convertList(applianceDtos);
         AppUser newAppUser = this.appUserService.setUserAppliances(appUserId, appliances);
