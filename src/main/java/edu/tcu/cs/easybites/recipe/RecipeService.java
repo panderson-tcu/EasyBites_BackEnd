@@ -1,5 +1,7 @@
 package edu.tcu.cs.easybites.recipe;
 
+import edu.tcu.cs.easybites.allergen.Allergen;
+import edu.tcu.cs.easybites.appliance.Appliance;
 import edu.tcu.cs.easybites.appuser.AppUser;
 import edu.tcu.cs.easybites.appuser.AppUserRepository;
 import edu.tcu.cs.easybites.ingredient.Ingredient;
@@ -182,5 +184,12 @@ public class RecipeService {
 
         this.appUserRepository.save(foundAppUser);
         return this.recipeRepository.save(foundRecipe);
+    }
+
+    public List<Recipe> findFilteredRecipes(String userId) {
+        AppUser foundUser = this.appUserRepository.findByUserId(userId).orElseThrow(() -> new ObjectNotFoundException("user", userId));
+        List<Allergen> allergens = foundUser.getAllergens();
+        List<Appliance> appliances = foundUser.getAppliances();
+        return this.recipeRepository.findApprovedRecipesByUserAppliancesAndNotAllergens(appliances, allergens);
     }
 }

@@ -25,7 +25,10 @@ public class RecipeController {
     private final RecipeDtoToRecipeConverter recipeDtoToRecipeConverter;
     private final RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter;
 
-    public RecipeController(RecipeService recipeService, RecipeToRecipeDtoConverter recipeToRecipeDtoConverter, RecipeDtoToRecipeConverter recipeDtoToRecipeConverter, RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter) {
+    public RecipeController(RecipeService recipeService,
+                            RecipeToRecipeDtoConverter recipeToRecipeDtoConverter,
+                            RecipeDtoToRecipeConverter recipeDtoToRecipeConverter,
+                            RecipeToApprovedRecipeDtoConverter recipeToApprovedRecipeDtoConverter) {
         this.recipeService = recipeService;
         this.recipeToRecipeDtoConverter = recipeToRecipeDtoConverter;
         this.recipeDtoToRecipeConverter = recipeDtoToRecipeConverter;
@@ -176,6 +179,13 @@ public class RecipeController {
         RecipeDto updatedRecipeDto = this.recipeToRecipeDtoConverter.convert(updatedRecipe);
 
         return new Result(true, StatusCode.SUCCESS, "remove recipe from shopping cart success", updatedRecipeDto);
+    }
+
+    @GetMapping("/filtered/{userId}")
+    public Result getFilteredRecipes(@PathVariable String userId) {
+        List<Recipe> foundRecipes = this.recipeService.findFilteredRecipes(userId);
+        List<ApprovedRecipeDto> foundRecipeDtos = this.recipeToApprovedRecipeDtoConverter.convertList(foundRecipes);
+        return new Result(true, StatusCode.SUCCESS, "View filtered recipes successful", foundRecipeDtos);
     }
 
 }
